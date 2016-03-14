@@ -77,6 +77,7 @@ qx.Class.define("ae.chart.Application", {
 			var splitpane = new qx.ui.splitpane.Pane("horizontal");
 			
 			var chart = new ae.chart.ui.Chart();
+			console.log(chart.isReady());
 			
 			splitpane.add(chart, 1);
 			splitpane.add(chart.getSettingsUI(), 0);
@@ -94,12 +95,17 @@ qx.Class.define("ae.chart.Application", {
 			qx.ui.core.queue.Manager.flush();
 			
 			chart.plot(data,layout);
+			
 			var req = new qx.io.request.Xhr("http://cmhm-sig:8888/notebooks/Adrien/Data/Charts/simple.json","GET");
 			req.addListener("success", function(e) {
 				var ptchart = JSON.parse(e.getTarget().getResponse());
 				
 				//chart.addListenerOnce("appear",function(e){
 					chart.plot(ptchart.data,ptchart.layout);
+					
+					
+					chart.snapshot('svg');
+					chart.snapshot('png');
 				//});
 				
 				

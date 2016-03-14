@@ -23,7 +23,13 @@ qx.Class.define("ae.chart.ui.Form", {
 
 		this.setPadding(20);
 		
-		var label = new qx.ui.basic.Label(param.getName());
+		//this.tr("ticklen");
+		/*if(param.getName()=="ticklen"){
+			var label = new qx.ui.basic.Label(this.tr("ticklen"));
+		}else{
+			var label = new qx.ui.basic.Label(this.tr(String(param.getName())));
+		}*/
+		var label = new qx.ui.basic.Label(this.tr(param.getName()));
 		var input;
 		
 		//Retrieve current value to fill the form
@@ -64,7 +70,10 @@ qx.Class.define("ae.chart.ui.Form", {
 				},this);
 				break;
 			case "number":
-				input = new qx.ui.form.TextField(String(currentValue));
+				if(currentValue){
+					currentValue = String(currentValue);
+				}
+				input = new qx.ui.form.TextField(currentValue);
 				input.addListener("changeValue",function(e){
 					this.updatePlot(e.getData());
 				},this);
@@ -88,7 +97,12 @@ qx.Class.define("ae.chart.ui.Form", {
 				break;
 			case "info_array":
 			case "data_array":
-				input = new qx.ui.form.TextField("["+currentValue.toString()+"]");
+				if(currentValue){
+					currentValue = currentValue.toString();
+				}else{
+					currentValue="";
+				}
+				input = new qx.ui.form.TextField("["+currentValue+"]");
 				input.addListener("changeValue",function(e){
 					this.updatePlot(e.getData());
 				},this);

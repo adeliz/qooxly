@@ -4,6 +4,7 @@
  * @asset(ae/chart/plotly.js)
  * 
  * @ignore(Plotly.*)
+ * @ignore(saveAs.*)
  */
 qx.Class.define("ae.chart.ui.Chart", {
 	extend : qx.ui.core.Widget,
@@ -127,6 +128,64 @@ qx.Class.define("ae.chart.ui.Chart", {
 			//Remove modebar
 			document.getElementsByClassName('modebar')[0].style.display="None";
 			this.getSettingsUI().loadSettings();
+		},
+		
+		/**
+		 * Export chart to svg or image
+		 * @param format {String} Format 'jpeg' | 'png' | 'webp' | 'svg'
+		 */
+		snapshot : function(format){
+			if(format=="svg" || format=="pdf" ){
+				var svg = Plotly.Snapshot.toSVG(this.getPlotlyDiv());
+				var blob = new Blob([svg], {type: "text/plain;charset=utf-8"});
+				  saveAs(blob, "chart."+format);
+			}else{
+				
+				//Should use canvg for IE11 : https://github.com/gabelerner/canvg
+				
+				var gd = this.getPlotlyDiv();
+
+
+		        var ev = Plotly.Snapshot.toImage(gd, {format: format});
+
+		        var filename = 'chart';
+		        filename += '.' + format;
+
+		        ev.once('success', function(result) {
+		        	
+
+		            var downloadLink = document.createElement('a');
+		            downloadLink.href = result;
+		            downloadLink.download = filename; // only supported by FF and Chrome
+
+		            document.body.appendChild(downloadLink);
+		            downloadLink.click();
+		            document.body.removeChild(downloadLink);
+
+		            ev.clean();
+		        });
+
+		        ev.once('error', function(err) {
+		            gd._snapshotInProgress = false;
+
+
+		            console.error(err);
+
+		            ev.clean();
+		        });
+			}
+		},
+		
+		/**
+		 * Check if chart has a valid div to use Plotly.js
+		 * @return {Boolean} Ready status
+		 */
+		isReady : function(){
+			if(this.getPlotlyDiv()){
+				return true;
+			}else{
+				return false;
+			}
 		}
 	}
 });

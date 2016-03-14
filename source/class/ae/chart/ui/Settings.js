@@ -279,7 +279,6 @@ qx.Class.define("ae.chart.ui.Settings", {
 									}
 
 									if(val.role=="object"){
-										
 										var pt = parent.kids.push({"name":key,"path":path,"kids":[]});
 										p = parent.kids[pt-1];
 
