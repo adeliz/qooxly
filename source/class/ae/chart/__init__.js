@@ -1,6 +1,5 @@
 /** <h3> ae.chart API Documentation </h3>
  *
- * Replace this text with an appropriate overview and introduction to your 
- * application.
+ * Qooxdoo wrapper for Plolty.js charting library (https://github.com/plotly/plotly.js).
  *
  */
