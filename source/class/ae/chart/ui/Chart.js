@@ -131,15 +131,25 @@ qx.Class.define("ae.chart.ui.Chart", {
 		},
 		
 		/**
-		 * Export chart to svg or image
-		 * @param format {String} Format 'jpeg' | 'png' | 'webp' | 'svg'
+		 * Export chart to json, svg or image
+		 * @param format {String} Format 'jpeg' | 'png' | 'json' | 'svg'
 		 */
-		snapshot : function(format){
-			if(format=="svg" || format=="pdf" ){
+		exportTo : function(format){
+			switch (format){
+			case "svg" :
 				var svg = Plotly.Snapshot.toSVG(this.getPlotlyDiv());
 				var blob = new Blob([svg], {type: "text/plain;charset=utf-8"});
-				  saveAs(blob, "chart."+format);
-			}else{
+				saveAs(blob, "chart."+format);
+				break;
+			
+			case "json" :
+				var json = JSON.stringify({data:this.getData(),layout:this.getLayout()});
+				var blob = new Blob([json], {type: "text/plain;charset=utf-8"});
+				saveAs(blob, "chart."+format);
+				break;
+				
+			case "png" :
+			case "jpeg" :
 				
 				//Should use canvg for IE11 : https://github.com/gabelerner/canvg
 				
@@ -173,6 +183,7 @@ qx.Class.define("ae.chart.ui.Chart", {
 
 		            ev.clean();
 		        });
+		        break;
 			}
 		},
 		

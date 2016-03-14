@@ -103,9 +103,6 @@ qx.Class.define("ae.chart.Application", {
 				//chart.addListenerOnce("appear",function(e){
 					chart.plot(ptchart.data,ptchart.layout);
 					
-					
-					chart.snapshot('svg');
-					chart.snapshot('png');
 				//});
 				
 				

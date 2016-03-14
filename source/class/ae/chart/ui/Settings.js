@@ -21,21 +21,62 @@ qx.Class.define("ae.chart.ui.Settings", {
 
 		this.chart=chart;
 		
-		var toolbar = new qx.ui.toolbar.ToolBar().set({
+		var toolbar = new qx.ui.toolbar.ToolBar();
+		var part1 = new qx.ui.toolbar.Part();
+		var newButton = new qx.ui.toolbar.Button("New", null).set({
 			enabled:false
 		});
-		var part1 = new qx.ui.toolbar.Part();
-		var newButton = new qx.ui.toolbar.Button("New", null);
-		var copyButton = new qx.ui.toolbar.Button("Copy", null);
-		var cutButton = new qx.ui.toolbar.Button("Cut", null);
-		var pasteButton = new qx.ui.toolbar.Button("Paste", null);
+		var openButton = new qx.ui.toolbar.Button("Open", null).set({
+			enabled:false
+		});
+		
+		var addmenu = new qx.ui.menu.Menu();
+		var add1 = new qx.ui.menu.Button("Trace");
+		var add2 = new qx.ui.menu.Button("Axe");
+		var add3 = new qx.ui.menu.Button("Note");
+		var add4 = new qx.ui.menu.Button("Shape");
+		addmenu.add(add1);
+		addmenu.add(add2);
+		addmenu.add(add3);
+		addmenu.add(add4);
+		
+		var addButton = new qx.ui.toolbar.MenuButton("Add", null, addmenu);
+		var deleteButton = new qx.ui.toolbar.Button("Delete", null).set({
+			enabled:false
+		});
+		
 		part1.add(newButton);
+		part1.add(openButton);
 		part1.add(new qx.ui.toolbar.Separator());
-		part1.add(copyButton);
-		part1.add(cutButton);
-		part1.add(pasteButton);
+		part1.add(addButton);
+		part1.add(deleteButton);
 		toolbar.add(part1);
-		//this.add(toolbar);
+		toolbar.addSpacer();
+		
+		var menu = new qx.ui.menu.Menu();
+		var export1 = new qx.ui.menu.Button("PNG");
+		export1.addListener("execute",function(e){
+			this.chart.exportTo('png');
+		},this);
+		var export2 = new qx.ui.menu.Button("JPEG");
+		export2.addListener("execute",function(e){
+			this.chart.exportTo('jpeg');
+		},this);
+		var export3 = new qx.ui.menu.Button("SVG");
+		export3.addListener("execute",function(e){
+			this.chart.exportTo('svg');
+		},this);
+		var export4 = new qx.ui.menu.Button("JSON");
+		export4.addListener("execute",function(e){
+			this.chart.exportTo('json');
+		},this);
+		menu.add(export1);
+		menu.add(export2);
+		menu.add(export3);
+		menu.add(export4);
+		var menubutton = new qx.ui.toolbar.MenuButton("Export", null, menu);
+		toolbar.add(menubutton);
+		this.add(toolbar);
 		
 		var filterProp = this.filterProp = new qx.ui.form.TextField().set({
 			placeholder:"Filter...",
