@@ -21,7 +21,7 @@ qx.Class.define("ae.chart.ui.Settings", {
 
 		this.chart=chart;
 		
-		var toolbar = new qx.ui.toolbar.ToolBar();
+		/*var toolbar = new qx.ui.toolbar.ToolBar();
 		var part1 = new qx.ui.toolbar.Part();
 		var newButton = new qx.ui.toolbar.Button("New", null).set({
 			enabled:false
@@ -76,7 +76,7 @@ qx.Class.define("ae.chart.ui.Settings", {
 		menu.add(export4);
 		var menubutton = new qx.ui.toolbar.MenuButton("Export", null, menu);
 		toolbar.add(menubutton);
-		this.add(toolbar);
+		this.add(toolbar);*/
 		
 		var filterProp = this.filterProp = new qx.ui.form.TextField().set({
 			placeholder:"Filter...",
