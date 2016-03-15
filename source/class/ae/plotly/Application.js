@@ -9,11 +9,11 @@
  ************************************************************************ */
 
 /**
- * This is the main application class of qxchart. It's only used for testing.
+ * This is the main application class of qxplotly. It's only used for testing.
  *
- * @asset(ae/chart/*)
+ * @asset(ae/plotly/*)
  */
-qx.Class.define("ae.chart.Application", {
+qx.Class.define("ae.plotly.Application", {
 	extend : qx.application.Standalone,
 
 	/*
@@ -76,7 +76,7 @@ qx.Class.define("ae.chart.Application", {
 			
 			var splitpane = new qx.ui.splitpane.Pane("horizontal");
 			
-			var chart = new ae.chart.ui.Chart();
+			var chart = new ae.plotly.ui.Chart();
 			console.log(chart.isReady());
 			
 			splitpane.add(chart, 1);

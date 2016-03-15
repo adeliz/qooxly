@@ -1,12 +1,12 @@
 /**
  * Chart widget
  * 
- * @asset(ae/chart/plotly.js)
+ * @asset(ae/plotly/plotly.js)
  * 
  * @ignore(Plotly.*)
  * @ignore(saveAs.*)
  */
-qx.Class.define("ae.chart.ui.Chart", {
+qx.Class.define("ae.plotly.ui.Chart", {
 	extend : qx.ui.core.Widget,
 
 	properties : {
@@ -39,7 +39,7 @@ qx.Class.define("ae.chart.ui.Chart", {
 
 		this.setDecorator("main");
 
-		this.setSettingsUI(new ae.chart.ui.Settings(this));
+		this.setSettingsUI(new ae.plotly.ui.Settings(this));
 		
         this.addListener("resize", function (e) {
         	Plotly.Plots.resize(this.getContentElement().getDomElement());

@@ -8,11 +8,11 @@
 
 ************************************************************************ */
 
-qx.Theme.define("ae.chart.theme.Decoration",
+qx.Theme.define("ae.plotly.theme.Font",
 {
-  extend : qx.theme.modern.Decoration,
+  extend : qx.theme.modern.Font,
 
-  decorations :
+  fonts :
   {
   }
 });

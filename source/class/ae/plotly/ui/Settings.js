@@ -2,13 +2,13 @@
  * Chart settings
  * 
  */
-qx.Class.define("ae.chart.ui.Settings", {
+qx.Class.define("ae.plotly.ui.Settings", {
 	
 	extend : qx.ui.container.Composite,
 
 	/**
 	 * Create a user interface for the chart's settings
-	 * @param chart {ae.chart.ui.Chart} Chart widget
+	 * @param chart {ae.plotly.ui.Chart} Chart widget
 	 */
 	construct : function(chart) {
 		this.base(arguments);
@@ -99,7 +99,7 @@ qx.Class.define("ae.chart.ui.Settings", {
 			var props = qx.Class.getProperties(clazz); 
 			if(props.indexOf("obj")!=-1){
 				this.form.removeAll();
-				this.form.add(new ae.chart.ui.Form(e.getData().getItem(0),chart),{flex:1});
+				this.form.add(new ae.plotly.ui.Form(e.getData().getItem(0),chart),{flex:1});
 			}
 		},this);
 		
@@ -185,7 +185,7 @@ qx.Class.define("ae.chart.ui.Settings", {
 		 * Load settings
 		 */
 		loadSettings : function(){
-			var req = new qx.io.request.Xhr("resource/ae/chart/plotly.json","GET");
+			var req = new qx.io.request.Xhr("resource/ae/plotly/plotly.json","GET");
 			req.addListener("success", function(e) {
 				var schema = JSON.parse(e.getTarget().getResponse()).schema;
 				

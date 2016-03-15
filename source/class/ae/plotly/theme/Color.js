@@ -8,7 +8,7 @@
 
 ************************************************************************ */
 
-qx.Theme.define("ae.chart.theme.Color",
+qx.Theme.define("ae.plotly.theme.Color",
 {
   extend : qx.theme.modern.Color,
 

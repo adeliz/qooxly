@@ -9,7 +9,7 @@ var envinfo = {"qx.application":"apiviewer.Application","qx.aspects":false,"qx.d
 for (var k in envinfo) qx.$$environment[k] = envinfo[k];
 
 if (!qx.$$libraries) qx.$$libraries = {};
-var libinfo = {"__out__":{"sourceUri":"script"},"ae.chart":{"resourceUri":"resource","sourceUri":"script"},"apiviewer":{"resourceUri":"resource","sourceUri":"script","sourceViewUri":"https://github.com/qooxdoo/qooxdoo/blob/%{qxGitBranch}/component/apiviewer/source/class/%{classFilePath}#L%{lineNumber}"},"qx":{"resourceUri":"resource","sourceUri":"script","sourceViewUri":"https://github.com/qooxdoo/qooxdoo/blob/%{qxGitBranch}/framework/source/class/%{classFilePath}#L%{lineNumber}"},"qxc.ui.versionlabel":{"resourceUri":"resource","sourceUri":"script"}};
+var libinfo = {"__out__":{"sourceUri":"script"},"ae.plotly":{"resourceUri":"resource","sourceUri":"script"},"apiviewer":{"resourceUri":"resource","sourceUri":"script","sourceViewUri":"https://github.com/qooxdoo/qooxdoo/blob/%{qxGitBranch}/component/apiviewer/source/class/%{classFilePath}#L%{lineNumber}"},"qx":{"resourceUri":"resource","sourceUri":"script","sourceViewUri":"https://github.com/qooxdoo/qooxdoo/blob/%{qxGitBranch}/framework/source/class/%{classFilePath}#L%{lineNumber}"},"qxc.ui.versionlabel":{"resourceUri":"resource","sourceUri":"script"}};
 for (var k in libinfo) qx.$$libraries[k] = libinfo[k];
 
 qx.$$resources = {};

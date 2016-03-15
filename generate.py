@@ -26,7 +26,7 @@
 import sys, os, re, subprocess, codecs, optparse
 
 CMD_PYTHON = sys.executable
-QOOXDOO_PATH = '../qooxdoo/webcontent'
+QOOXDOO_PATH = '../../DEV/Workspace/qooxdoo/webcontent'
 QX_PYLIB = "tool/pylib"
 
 ##

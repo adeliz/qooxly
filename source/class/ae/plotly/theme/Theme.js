@@ -8,14 +8,14 @@
 
 ************************************************************************ */
 
-qx.Theme.define("ae.chart.theme.Theme",
+qx.Theme.define("ae.plotly.theme.Theme",
 {
   meta :
   {
-    color : ae.chart.theme.Color,
-    decoration : ae.chart.theme.Decoration,
-    font : ae.chart.theme.Font,
+    color : ae.plotly.theme.Color,
+    decoration : ae.plotly.theme.Decoration,
+    font : ae.plotly.theme.Font,
     icon : qx.theme.icon.Tango,
-    appearance : ae.chart.theme.Appearance
+    appearance : ae.plotly.theme.Appearance
   }
 });

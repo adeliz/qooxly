@@ -4,14 +4,14 @@
  * @ignore(Plotly.*)
  * 
  */
-qx.Class.define("ae.chart.ui.Form", {
+qx.Class.define("ae.plotly.ui.Form", {
 	
 	extend : qx.ui.container.Composite,
 
 	/**
 	 * Create a new form
-	 * @param param  {qx.core.Object} object that describe the parameter. See code of {@link ae.chart.ui.Settings#loadSettings loadSettings} method
-	 * @param chart  {ae.chart.ui.Chart} The chart widget
+	 * @param param  {qx.core.Object} object that describe the parameter. See code of {@link ae.plotly.ui.Settings#loadSettings loadSettings} method
+	 * @param chart  {ae.plotly.ui.Chart} The chart widget
 	 */
 	construct : function(param,chart) {
 		this.base(arguments);
@@ -79,7 +79,7 @@ qx.Class.define("ae.chart.ui.Form", {
 				},this);
 				break;
 			case "color":
-				input = new ae.chart.ui.ColorField(currentValue);
+				input = new ae.plotly.ui.ColorField(currentValue);
 				input.addListener("changeValue",function(e){
 					this.updatePlot(e.getData());
 				},this);

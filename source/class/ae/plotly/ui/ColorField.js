@@ -1,7 +1,7 @@
 /**
  * ColorField widget
  */
-qx.Class.define("ae.chart.ui.ColorField", {
+qx.Class.define("ae.plotly.ui.ColorField", {
 	extend : qx.ui.form.TextField,
 
 	construct : function (){
