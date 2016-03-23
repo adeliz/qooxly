@@ -16,6 +16,28 @@
 qx.Class.define("ae.plotly.Application", {
 	extend : qx.application.Standalone,
 
+	properties :
+	  {
+	      /**
+	       * Chart view
+	       */
+	      chartView : {
+	          init : null
+	      },
+	      /**
+	       * ToolBar
+	       */
+	      toolBar : {
+	          init : null
+	      },
+	      /**
+	       * Menu
+	       */
+	      menu : {
+	          init : null
+	      }
+	  },
+	  
 	/*
 	 *****************************************************************************
 	   MEMBERS
@@ -33,6 +55,8 @@ qx.Class.define("ae.plotly.Application", {
 			// Call super class
 			this.base(arguments);
 
+			qx.core.Environment.version = "0.1";
+			
 			// Enable logging in debug variant
 			if (qx.core.Environment.get("qx.debug")) {
 				// support native logging capabilities, e.g. Firebug for Firefox
@@ -41,15 +65,89 @@ qx.Class.define("ae.plotly.Application", {
 				qx.log.appender.Console;
 			}
 
-			/*
-			-------------------------------------------------------------------------
-			  Below is your actual application code...
-			-------------------------------------------------------------------------
-			 */
+			//set theme
+	        qx.theme.manager.Meta.getInstance().setTheme(qx.theme.Indigo);
 
-			// Document is the application root
-			var doc = this.getRoot();
+	        
+	      //the application root
+	        var root = this._root = this.getRoot();
 
+	      //---------------------------Model-----------------------------------
+	        var projectController = this.projectController = new ae.plotly.controller.Project();
+
+	        /*var model = new ae.map.model.Map();
+	        this.setModelMap(model);
+
+
+	        var mapController = this.mapController = new map.controller.Map();
+	        this.setEditorView(new map.view.EditorView());*/
+	        //--------------------------Header----------------------------------------------------
+	        
+	        var workbench = new qx.ui.container.Composite();
+
+	        var layout = new qx.ui.layout.VBox;
+	        //layout.setSeparator("separator-vertical");
+	        workbench.setLayout(layout);
+
+	        var header = new qx.ui.container.Composite(
+	            new qx.ui.layout.HBox()).set({
+	                decorator: null
+	            });
+	        //header.setAppearance("app-header");
+	        var img = new qx.ui.basic.Image("ae/plotly/app_header.png").set({
+	            marginRight: 15
+	        });
+	        var title = this.title = new qx.ui.basic.Label("Plotly Editor").set({
+	            marginTop: 10,
+	            marginLeft: 6,
+	            rich: true,
+	            textColor: "#333"
+	        });
+	        var myFont = new qx.bom.Font(18, ["Arial", "Segoe UI"]).set({
+	            bold: true
+	        });
+	        title.setFont(myFont);
+	        //title.setFont("Helvetica");
+
+	        var version = new qx.ui.basic.Label("Version 0.1").set({
+	            marginTop: 17,
+	            marginRight: 40
+	        });
+	        version.setFont("default");
+
+	        header.add(img);
+
+	        var midHeader = new qx.ui.container.Composite(new qx.ui.layout.VBox());
+	        midHeader.add(title);
+
+	        this.setMenu(new ae.plotly.ui.Menu());
+	        midHeader.add(this.getMenu());
+
+	        header.add(midHeader);
+	        header.add(new qx.ui.core.Widget(),{flex:1});
+
+	        workbench.add(header);
+	        //----------------------------ToolBar-------------------------------------------------
+	        this.setToolBar(new ae.plotly.ui.ToolBar());
+	        workbench.add(this.getToolBar());
+	        //----------------------------Body----------------------------------------------------
+
+	        var splitpane = new qx.ui.splitpane.Pane("horizontal").set({margin:5});
+	        splitpane.getChildControl("splitter").setBackgroundColor("white");
+	        
+	        var qxchart = new ae.plotly.ui.Chart();
+	        this.setChartView(qxchart);
+	        
+	        splitpane.add(this.getChartView(), 1);
+			splitpane.add(qxchart.getSettingsUI(), 0);
+			//qxchart.getSettingsUI().exclude();
+			
+	        workbench.add(splitpane, {flex : 1});
+
+	        root.add(workbench, {
+	            edge : 0
+	        });
+	        
 			var trace1 = {
 				x : [ 1, 2, 3, 4 ],
 				y : [ 10, 15, 13, 17 ],
@@ -74,42 +172,10 @@ qx.Class.define("ae.plotly.Application", {
 			var data = [ trace1, trace2 ];
 			var layout={title:'Test'};
 			
-			var splitpane = new qx.ui.splitpane.Pane("horizontal");
-			
-			var chart = new ae.plotly.ui.Chart();
-			console.log(chart.isReady());
-			
-			splitpane.add(chart, 1);
-			splitpane.add(chart.getSettingsUI(), 0);
-			
-			doc.add(splitpane, {
-				edge : 0
-			});
-			
-			/**
-			 * Because Plotly needs a DOM element, after the qxchart creation, 2 tehcnics are possbile to plot a chart :
-			 *  - add the chart widget to the application root, flush and then plot the chart chart.plot(data,layout);
-			 *  - use the "appear" event with the addListnerOnce method.
-			 *    Be careful to call the addListenerOnce("appear",...) method before the chart widget apparition otherwise it won't be triggered  
-			 */
 			qx.ui.core.queue.Manager.flush();
 			
-			chart.plot(data,layout);
-			
-			var req = new qx.io.request.Xhr("http://cmhm-sig:8888/notebooks/Adrien/Data/Charts/simple.json","GET");
-			req.addListener("success", function(e) {
-				var ptchart = JSON.parse(e.getTarget().getResponse());
-				
-				//chart.addListenerOnce("appear",function(e){
-					chart.plot(ptchart.data,ptchart.layout);
-					
-				//});
-				
-				
-			});
-			req.send();
-			
-			
+			qxchart.plot(data,layout);
+
 		}
 	}
 });
