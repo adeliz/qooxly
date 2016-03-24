@@ -9,18 +9,25 @@ qx.Class.define("ae.plotly.ui.Menu",
             this.setBackgroundColor("white");
 
             //File - New/Open.../Open from URL.../Save as.../Print
+            var menufile = new qx.ui.menu.Menu();
+            var newButton = new qx.ui.menu.Button(this.tr("New"), null, qx.core.Init.getApplication().projectController.getCommand("newplot"));
+            var openButton = new qx.ui.menu.Button(this.tr("Open..."), null, qx.core.Init.getApplication().projectController.getCommand("open"));
+            var openurlButton = new qx.ui.menu.Button(this.tr("Open from URL..."), null, qx.core.Init.getApplication().projectController.getCommand("openurl"));
+            var saveasButton = new qx.ui.menu.Button(this.tr("Save as..."), null, qx.core.Init.getApplication().projectController.getCommand("saveas"));
+            var printButton = new qx.ui.menu.Button(this.tr("Print"), null, qx.core.Init.getApplication().projectController.getCommand("print"));
+            menufile.add(newButton);
+            menufile.addSeparator();
+            menufile.add(openButton);
+            menufile.add(openurlButton);
+            menufile.addSeparator();
+            menufile.add(saveasButton);
+            //menufile.addSeparator();
+            //menufile.add(printButton);
             
-            //Data - Add/Move/Edit/Delete
+            var fileMenu = new qx.ui.menubar.Button(this.tr("File"), null, menufile);
+            this.add(fileMenu);
             
-            //Axes
-            
-            //Layout
-            
-            //Shapes
-            
-            //Annotations
-            
-            //Legend
+            //Edit - Data/Axes/Layout/Shapes/Annotations/Legend
             
             //Settings
             
@@ -34,7 +41,6 @@ qx.Class.define("ae.plotly.ui.Menu",
             menuhelp.add(aboutButton);
 
             var helpMenu = new qx.ui.menubar.Button(this.tr("Help"), null, menuhelp);
-
             this.add(helpMenu);
         }
     });

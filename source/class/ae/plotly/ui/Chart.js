@@ -131,21 +131,21 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		},
 		
 		/**
-		 * Export chart to json, svg or image
+		 * Save chart as json, svg or image
 		 * @param format {String} Format 'jpeg' | 'png' | 'json' | 'svg'
 		 */
-		exportTo : function(format){
+		saveAs : function(format, filename){
 			switch (format){
 			case "svg" :
 				var svg = Plotly.Snapshot.toSVG(this.getPlotlyDiv());
 				var blob = new Blob([svg], {type: "text/plain;charset=utf-8"});
-				saveAs(blob, "chart."+format);
+				saveAs(blob, filename+"."+format);
 				break;
 			
 			case "json" :
 				var json = JSON.stringify({data:this.getData(),layout:this.getLayout()});
 				var blob = new Blob([json], {type: "text/plain;charset=utf-8"});
-				saveAs(blob, "chart."+format);
+				saveAs(blob, filename+"."+format);
 				break;
 				
 			case "png" :
@@ -158,7 +158,6 @@ qx.Class.define("ae.plotly.ui.Chart", {
 
 		        var ev = Plotly.Snapshot.toImage(gd, {format: format});
 
-		        var filename = 'chart';
 		        filename += '.' + format;
 
 		        ev.once('success', function(result) {

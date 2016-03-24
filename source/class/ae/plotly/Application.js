@@ -69,10 +69,10 @@ qx.Class.define("ae.plotly.Application", {
 	        qx.theme.manager.Meta.getInstance().setTheme(qx.theme.Indigo);
 
 	        
-	      //the application root
+	        //the application root
 	        var root = this._root = this.getRoot();
 
-	      //---------------------------Model-----------------------------------
+	        //---------------------------Model-----------------------------------
 	        var projectController = this.projectController = new ae.plotly.controller.Project();
 
 	        /*var model = new ae.map.model.Map();
@@ -147,7 +147,7 @@ qx.Class.define("ae.plotly.Application", {
 	        root.add(workbench, {
 	            edge : 0
 	        });
-	        
+            
 			var trace1 = {
 				x : [ 1, 2, 3, 4 ],
 				y : [ 10, 15, 13, 17 ],
@@ -174,8 +174,18 @@ qx.Class.define("ae.plotly.Application", {
 			
 			qx.ui.core.queue.Manager.flush();
 			
-			qxchart.plot(data,layout);
-
+			//qxchart.plot(data,layout);
+			qxchart.plot([],{});			
+	        
+	        //Check query parameters
+	        var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == "url"){
+                	projectController.loadFromUrl(pair[1]);
+                }
+            }
 		}
 	}
 });
