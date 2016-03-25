@@ -42,7 +42,9 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		this.setSettingsUI(new ae.plotly.ui.Settings(this));
 		
         this.addListener("resize", function (e) {
-        	Plotly.Plots.resize(this.getContentElement().getDomElement());
+        	if(this.getContentElement().getDomElement()){
+        		Plotly.Plots.resize(this.getContentElement().getDomElement());
+        	}
         },this);
         
         

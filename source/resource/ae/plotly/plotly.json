@@ -1,5 +1,5 @@
 {
-    "sha1": "6c9a8ce4445a08874a3c7e59b2b62bd2a905a6c8",
+    "sha1": "df363acac40a1b94785333d8f7e021871556336a",
     "modified": true,
     "schema": {
         "defs": {
@@ -6789,16 +6789,11 @@
             },
             "surface": {
                 "attributes": {
-                    "zmax": {
+                    "cmin": {
                         "valType": "number",
                         "role": "info",
-                        "description": "Sets the upper bound of color domain.",
+                        "description": "Sets the lower bound of color domain.",
                         "dflt": null
-                    },
-                    "uid": {
-                        "valType": "string",
-                        "role": "info",
-                        "dflt": ""
                     },
                     "stream": {
                         "token": {
@@ -6826,12 +6821,6 @@
                         "role": "data",
                         "description": "Sets the text elements associated with each z value."
                     },
-                    "zmin": {
-                        "valType": "number",
-                        "role": "info",
-                        "description": "Sets the lower bound of color domain.",
-                        "dflt": null
-                    },
                     "scene": {
                         "valType": "sceneid",
                         "role": "info",
@@ -6853,6 +6842,16 @@
                         ],
                         "description": "Determines whether or not this trace is visible. If *legendonly*, the trace is not drawn, but can appear as a legend item (provided that the legend itself is visible).",
                         "dflt": true
+                    },
+                    "surfacecolorsrc": {
+                        "valType": "string",
+                        "role": "info",
+                        "description": "Sets the source reference on plot.ly for  surfacecolor ."
+                    },
+                    "uid": {
+                        "valType": "string",
+                        "role": "info",
+                        "dflt": ""
                     },
                     "colorbar": {
                         "yanchor": {
@@ -7198,6 +7197,11 @@
                         "description": "Determines whether or not an item corresponding to this trace is shown in the legend.",
                         "dflt": true
                     },
+                    "surfacecolor": {
+                        "valType": "data_array",
+                        "role": "data",
+                        "description": "Sets the surface color values, used for setting a color scale independent of `z`."
+                    },
                     "contours": {
                         "y": {
                             "show": {
@@ -7399,6 +7403,26 @@
                         "description": "Sets the source reference on plot.ly for  y ."
                     },
                     "type": "surface",
+                    "_deprecated": {
+                        "zmin": {
+                            "valType": "number",
+                            "role": "info",
+                            "description": "Obsolete. Use `cmin` instead.",
+                            "dflt": null
+                        },
+                        "zmax": {
+                            "valType": "number",
+                            "role": "info",
+                            "description": "Obsolete. Use `cmax` instead.",
+                            "dflt": null
+                        },
+                        "zauto": {
+                            "valType": "boolean",
+                            "role": "info",
+                            "description": "Obsolete. Use `cauto` instead.",
+                            "dflt": true
+                        }
+                    },
                     "opacity": {
                         "max": 1,
                         "valType": "number",
@@ -7415,6 +7439,12 @@
                     "hidesurface": {
                         "valType": "boolean",
                         "role": "info",
+                        "dflt": false
+                    },
+                    "autocolorscale": {
+                        "valType": "boolean",
+                        "role": "style",
+                        "description": "Determines whether or not the colorscale is picked using the sign of the input z values.",
                         "dflt": false
                     },
                     "lighting": {
@@ -7483,11 +7513,10 @@
                         "role": "info",
                         "valType": "flaglist"
                     },
-                    "zauto": {
-                        "valType": "boolean",
-                        "role": "info",
-                        "description": "Determines the whether or not the color domain is computed with respect to the input data.",
-                        "dflt": true
+                    "z": {
+                        "valType": "data_array",
+                        "role": "data",
+                        "description": "Sets the z coordinates."
                     },
                     "name": {
                         "valType": "string",
@@ -7499,17 +7528,17 @@
                         "role": "style",
                         "description": "Sets the colorscale. The colorscale must be an array containing arrays mapping a normalized value to an rgb, rgba, hex, hsl, hsv, or named color string. At minimum, a mapping for the lowest (0) and highest (1) values are required. For example, `[[0, 'rgb(0,0,255)', [1, 'rgb(255,0,0)']]`. To control the bounds of the colorscale in z space, use zmin and zmax"
                     },
-                    "autocolorscale": {
-                        "valType": "boolean",
-                        "role": "style",
-                        "description": "Determines whether or not the colorscale is picked using the sign of the input z values.",
-                        "dflt": false
-                    },
                     "reversescale": {
                         "valType": "boolean",
                         "role": "style",
                         "description": "Reverses the colorscale.",
                         "dflt": false
+                    },
+                    "cauto": {
+                        "valType": "boolean",
+                        "role": "info",
+                        "description": "Determines the whether or not the color domain is computed with respect to the input data.",
+                        "dflt": true
                     },
                     "y": {
                         "valType": "data_array",
@@ -7521,13 +7550,14 @@
                         "role": "data",
                         "description": "Sets the x coordinates."
                     },
-                    "z": {
-                        "valType": "data_array",
-                        "role": "data",
-                        "description": "Sets the z coordinates."
+                    "cmax": {
+                        "valType": "number",
+                        "role": "info",
+                        "description": "Sets the upper bound of color domain.",
+                        "dflt": null
                     }
                 },
-                "description": "The data the describes the coordinates of the surface is set in `z`. Data in `z` should be a {2D array}. Coordinates in `x` and `y` can either be 1D {arrays} or {2D arrays} (e.g. to graph parametric surfaces). If not provided in `x` and `y`, the x and y coordinates are assumed to be linear starting at 0 with a unit step."
+                "description": "The data the describes the coordinates of the surface is set in `z`. Data in `z` should be a {2D array}. Coordinates in `x` and `y` can either be 1D {arrays} or {2D arrays} (e.g. to graph parametric surfaces). If not provided in `x` and `y`, the x and y coordinates are assumed to be linear starting at 0 with a unit step. The color scale corresponds to the `z` values by default. For custom color scales, use `surfacecolor` which should be a {2D array}, where its bounds can be controlled using `cmin` and `cmax`."
             },
             "histogram2d": {
                 "hrName": "histogram_2d",
