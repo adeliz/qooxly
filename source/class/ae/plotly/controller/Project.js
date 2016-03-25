@@ -40,6 +40,11 @@ qx.Class.define("ae.plotly.controller.Project",{
             	this.savePlotAs();
             }, this);
             
+            commands.addaxe = new qx.ui.command.Command();
+            commands.addaxe.addListener("execute", function(){
+            	//qx.core.Init.getApplication().getChartView().relayout();
+            }, this);
+            
             commands.option = new qx.ui.command.Command();
             commands.option.addListener("execute", function(e){
             	if(!e.getData().getValue()){

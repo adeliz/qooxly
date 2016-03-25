@@ -20,64 +20,7 @@ qx.Class.define("ae.plotly.ui.Settings", {
 		layout.setSeparator("separator-vertical");
 
 		this.chart=chart;
-		
-		/*var toolbar = new qx.ui.toolbar.ToolBar();
-		var part1 = new qx.ui.toolbar.Part();
-		var newButton = new qx.ui.toolbar.Button("New", null).set({
-			enabled:false
-		});
-		var openButton = new qx.ui.toolbar.Button("Open", null).set({
-			enabled:false
-		});
-		
-		var addmenu = new qx.ui.menu.Menu();
-		var add1 = new qx.ui.menu.Button("Trace");
-		var add2 = new qx.ui.menu.Button("Axe");
-		var add3 = new qx.ui.menu.Button("Note");
-		var add4 = new qx.ui.menu.Button("Shape");
-		addmenu.add(add1);
-		addmenu.add(add2);
-		addmenu.add(add3);
-		addmenu.add(add4);
-		
-		var addButton = new qx.ui.toolbar.MenuButton("Add", null, addmenu);
-		var deleteButton = new qx.ui.toolbar.Button("Delete", null).set({
-			enabled:false
-		});
-		
-		part1.add(newButton);
-		part1.add(openButton);
-		part1.add(new qx.ui.toolbar.Separator());
-		part1.add(addButton);
-		part1.add(deleteButton);
-		toolbar.add(part1);
-		toolbar.addSpacer();
-		
-		var menu = new qx.ui.menu.Menu();
-		var export1 = new qx.ui.menu.Button("PNG");
-		export1.addListener("execute",function(e){
-			this.chart.exportTo('png');
-		},this);
-		var export2 = new qx.ui.menu.Button("JPEG");
-		export2.addListener("execute",function(e){
-			this.chart.exportTo('jpeg');
-		},this);
-		var export3 = new qx.ui.menu.Button("SVG");
-		export3.addListener("execute",function(e){
-			this.chart.exportTo('svg');
-		},this);
-		var export4 = new qx.ui.menu.Button("JSON");
-		export4.addListener("execute",function(e){
-			this.chart.exportTo('json');
-		},this);
-		menu.add(export1);
-		menu.add(export2);
-		menu.add(export3);
-		menu.add(export4);
-		var menubutton = new qx.ui.toolbar.MenuButton("Export", null, menu);
-		toolbar.add(menubutton);
-		this.add(toolbar);*/
-		
+			
 		var filterProp = this.filterProp = new qx.ui.form.TextField().set({
 			placeholder:"Filter...",
 			margin:5
@@ -185,9 +128,12 @@ qx.Class.define("ae.plotly.ui.Settings", {
 		 * Load settings
 		 */
 		loadSettings : function(){
+
 			var req = new qx.io.request.Xhr("resource/ae/plotly/plotly.json","GET");
 			req.addListener("success", function(e) {
+
 				var schema = JSON.parse(e.getTarget().getResponse()).schema;
+				//console.log(schema);
 				
 				var types = [];
 				for (var key in schema.traces) {
@@ -226,7 +172,7 @@ qx.Class.define("ae.plotly.ui.Settings", {
 						var axe = {};
 						var axetype = key.substring(0,5);
 						axe[key]=schema.layout.layoutAttributes[axetype];
-
+	
 						this.walk(axe,axes,[],"relayout",null);
 						//axes.kids.push(aaxe);
 					}
@@ -242,7 +188,7 @@ qx.Class.define("ae.plotly.ui.Settings", {
 					axe["yaxis"]=schema.layout.layoutAttributes["yaxis"];
 					this.walk(axe,axes,[],"relayout",null);
 				}
-
+	
 				
 				var notes={"name":"Notes","kids":[]};
 				var ptnotes = this.chart.getPlotlyDiv().layout.annotations;
@@ -254,7 +200,7 @@ qx.Class.define("ae.plotly.ui.Settings", {
 					}
 				}
 				
-				//Relayout shapes doesn't work yet?
+				//Relayout shapes doesn't work yet? - Should use redraw()!
 				/*var shapes={"name":"Shapes","kids":[]};
 				var ptshapes = this.chart.getPlotlyDiv().layout.shapes;
 				if(ptshapes!=null){
@@ -279,13 +225,17 @@ qx.Class.define("ae.plotly.ui.Settings", {
 				};
 				
 				var model = qx.data.marshal.Json.createModel(myschema);
+				
+				//@todo : It takes too long!! Use virtualTree instead?
+				//var dt1  = new Date().getTime();
 				this.treeController.setModel(model);
-
+				//var dt2  = new Date().getTime();
+				//console.log((dt2-dt1)/1000);
+				
 				this.tree.getRoot().setOpen(true);
 				//this.tree.setHideRoot(true);
-    		}, this);
-    		
-    		req.send();
+			},this);
+			req.send();
 		},
 		
 		/**

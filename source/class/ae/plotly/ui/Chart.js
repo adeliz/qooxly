@@ -124,11 +124,30 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 */
 		plot : function(data,layout){
 			Plotly.newPlot(this.getPlotlyDiv(), data, layout);//,{modeBarButtonsToRemove: ['sendDataToCloud','hoverCompareCartesian'],displaylogo: false} );
+			//Resize
+			Plotly.Plots.resize(this.getContentElement().getDomElement());
 			
 			this.setData(this.getPlotlyDiv().data);
 			this.setLayout(this.getPlotlyDiv().layout);
 			//Remove modebar
-			document.getElementsByClassName('modebar')[0].style.display="None";
+			document.getElementsByClassName('modebar')[0].style.display="None";			
+			
+			//Get data from extra source parameter
+			for(var i=0;i<data.length;i++){     		
+        		var src = data[i].source;
+        		if(src){
+        			switch(src.format){
+        			case "KDB":
+        				//var url="http://cmhm-sig/api/v1/query?";
+        				var url=src.url;
+        				for(key in src.parameters){
+        					url=url+key+"="+src.parameters[key]+"&";
+        				}
+        				this.loadKairosDBData(i,url);                    				
+        				break;
+        			}
+        		}
+        	}
 			this.getSettingsUI().loadSettings();
 		},
 		
@@ -186,6 +205,24 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		        });
 		        break;
 			}
+		},
+		
+		loadKairosDBData : function(k,src){
+			var req = new qx.io.request.Xhr(src);
+			
+            req.addListener("success", function (e) {
+            	var x=[];
+            	var y=[];
+            	var values  =e.getTarget().getResponse().queries[0].results[0].values;
+            	for (var i = 1; i < values.length; i++) {
+                    x.push(values[i][0]);
+                    y.push(parseFloat(values[i][1]));
+                }
+
+            	this.restyle({x:[x],y:[y]},k);
+                
+            },this);
+            req.send();
 		},
 		
 		/**
