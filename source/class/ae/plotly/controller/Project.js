@@ -40,9 +40,57 @@ qx.Class.define("ae.plotly.controller.Project",{
             	this.savePlotAs();
             }, this);
             
-            commands.addaxe = new qx.ui.command.Command();
-            commands.addaxe.addListener("execute", function(){
-            	//qx.core.Init.getApplication().getChartView().relayout();
+            commands.addYAxis = new qx.ui.command.Command();
+            commands.addYAxis.addListener("execute", function(){
+            	var yaxis=0;
+            	var layout = qx.core.Init.getApplication().getChartView().getLayout();
+            	for (var key in layout) {
+					if(key.substring(0,5)=="yaxis"){
+						yaxis = yaxis+1;
+					}
+				}
+				//Add basic yAxis if needed
+				if(yaxis==0){
+					yaxis = yaxis+1;
+				}
+				var obj = {};
+				obj["yaxis"+(yaxis+1)]={"anchor":"x","overlaying":"y"};
+            	qx.core.Init.getApplication().getChartView().relayout(obj);
+            	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            }, this);
+            
+            commands.addXAxis = new qx.ui.command.Command();
+            commands.addXAxis.addListener("execute", function(){
+            	var xaxis=0;
+            	var layout = qx.core.Init.getApplication().getChartView().getLayout();
+            	for (var key in layout) {
+					if(key.substring(0,5)=="xaxis"){
+						xaxis = xaxis+1;
+					}
+				}
+				//Add basic xAxis if needed
+				if(xaxis==0){
+					xaxis = xaxis+1;
+				}
+				var obj = {};
+				obj["xaxis"+(xaxis+1)]={"anchor":"y","overlaying":"x"};
+            	qx.core.Init.getApplication().getChartView().relayout(obj);
+            	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            }, this);
+            
+            commands.removeAxis = new qx.ui.command.Command();
+            commands.removeAxis.addListener("execute", function(){
+            	var axis = qx.core.Init.getApplication().getChartView().getSettingsUI().treeController.getSelection().getItem(0);
+            	if(axis!=null){
+            		if(axis.getName().substring(0,5)=="xaxis" || axis.getName().substring(0,5)=="yaxis" ){
+                    	var obj = {};
+                    	obj[axis.getName()]=null;
+                    	
+                    	qx.core.Init.getApplication().getChartView().relayout(obj);
+                    	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            		}
+            	}
+            	
             }, this);
             
             commands.option = new qx.ui.command.Command();

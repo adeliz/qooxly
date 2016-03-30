@@ -140,7 +140,7 @@ qx.Class.define("ae.plotly.ui.Chart", {
         			case "KDB":
         				//var url="http://cmhm-sig/api/v1/query?";
         				var url=src.url;
-        				for(key in src.parameters){
+        				for(var key in src.parameters){
         					url=url+key+"="+src.parameters[key]+"&";
         				}
         				this.loadKairosDBData(i,url);                    				

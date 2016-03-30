@@ -28,6 +28,16 @@ qx.Class.define("ae.plotly.ui.Menu",
             this.add(fileMenu);
             
             //Edit - Data/Axes/Layout/Shapes/Annotations/Legend
+            var menuaxes = new qx.ui.menu.Menu();
+            var addXAxisButton = new qx.ui.menu.Button(this.tr("Add X Axis"), null, qx.core.Init.getApplication().projectController.getCommand("addXAxis"));
+            var addYAxisButton = new qx.ui.menu.Button(this.tr("Add Y Axis"), null, qx.core.Init.getApplication().projectController.getCommand("addYAxis"));
+            var removeAxisButton = new qx.ui.menu.Button(this.tr("Remove Axis"), null, qx.core.Init.getApplication().projectController.getCommand("removeAxis"));
+            menuaxes.add(addXAxisButton);
+            menuaxes.add(addYAxisButton);
+            menuaxes.add(removeAxisButton);
+            
+            var axesMenu = new qx.ui.menubar.Button(this.tr("Axes"), null, menuaxes);
+            this.add(axesMenu);
             
             //Settings
             

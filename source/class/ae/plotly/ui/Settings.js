@@ -32,17 +32,25 @@ qx.Class.define("ae.plotly.ui.Settings", {
 		}, this);
 		this.add(filterProp);
 		
+		
+		//var tree = this.tree =  new qx.ui.tree.VirtualTree(null, "name", "kids");
 		var tree = this.tree = new qx.ui.tree.Tree().set({
 			decorator:null
 		});
 		
+		
 		var treeController = this.treeController = new qx.data.controller.Tree(null, tree, "kids", "name");
 		treeController.addListener("changeSelection",function(e){
-			var clazz = qx.Class.getByName(e.getData().getItem(0).classname); 
-			var props = qx.Class.getProperties(clazz); 
-			if(props.indexOf("obj")!=-1){
-				this.form.removeAll();
-				this.form.add(new ae.plotly.ui.Form(e.getData().getItem(0),chart),{flex:1});
+		//tree.getSelection().addListener("change", function(e) {
+			var selected = e.getData().getItem(0);
+			//var selected = tree.getSelection().getItem(0);
+			if(selected){
+				var clazz = qx.Class.getByName(selected.classname); 
+				var props = qx.Class.getProperties(clazz); 
+				if(props.indexOf("obj")!=-1){
+					this.form.removeAll();
+					this.form.add(new ae.plotly.ui.Form(selected,chart),{flex:1});
+				}
 			}
 		},this);
 		
@@ -178,12 +186,12 @@ qx.Class.define("ae.plotly.ui.Settings", {
 					}
 				}
 				//Add basic xAxis and yAxis if needed
-				if(xaxis=0){
+				if(xaxis==0){
 					var axe = {};
 					axe["xaxis"]=schema.layout.layoutAttributes["xaxis"];
 					this.walk(axe,axes,[],"relayout",null);
 				}
-				if(yaxis=0){
+				if(yaxis==0){
 					var axe = {};
 					axe["yaxis"]=schema.layout.layoutAttributes["yaxis"];
 					this.walk(axe,axes,[],"relayout",null);
@@ -229,6 +237,7 @@ qx.Class.define("ae.plotly.ui.Settings", {
 				//@todo : It takes too long!! Use virtualTree instead?
 				//var dt1  = new Date().getTime();
 				this.treeController.setModel(model);
+				//this.tree.setModel(model);
 				//var dt2  = new Date().getTime();
 				//console.log((dt2-dt1)/1000);
 				
