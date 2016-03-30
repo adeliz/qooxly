@@ -40,6 +40,14 @@ qx.Class.define("ae.plotly.ui.Menu",
             this.add(axesMenu);
             
             //Settings
+            var menusettings = new qx.ui.menu.Menu();
+            var configButton = new qx.ui.menu.CheckBox(this.tr("Show/Hide editor"));
+            configButton.setValue(true);
+            configButton.setCommand(qx.core.Init.getApplication().projectController.getCommand("option"));
+            menusettings.add(configButton);
+            
+            var settingsMenu = new qx.ui.menubar.Button(this.tr("Settings"), null, menusettings);
+            this.add(settingsMenu);
             
             //Help
             var menuhelp = new qx.ui.menu.Menu();

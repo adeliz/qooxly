@@ -97,7 +97,7 @@ qx.Class.define("ae.plotly.Application", {
 	        var img = new qx.ui.basic.Image("ae/plotly/app_header.png").set({
 	            marginRight: 15
 	        });
-	        var title = this.title = new qx.ui.basic.Label("Plotly Editor").set({
+	        var title = this.title = new qx.ui.basic.Label("Qooxly <span style='color:#999; font-size:14px; font-weight:normal'>- Chart Editor</span>").set({
 	            marginTop: 10,
 	            marginLeft: 6,
 	            rich: true,
