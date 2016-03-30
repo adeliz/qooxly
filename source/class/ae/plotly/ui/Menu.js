@@ -24,10 +24,12 @@ qx.Class.define("ae.plotly.ui.Menu",
             //menufile.addSeparator();
             //menufile.add(printButton);
             
-            var fileMenu = new qx.ui.menubar.Button(this.tr("File"), null, menufile);
+            var fileMenu = new qx.ui.menubar.Button(this.tr("Chart"), null, menufile);
             this.add(fileMenu);
             
-            //Edit - Data/Axes/Layout/Shapes/Annotations/Legend
+            //Traces
+            
+            //Axes
             var menuaxes = new qx.ui.menu.Menu();
             var addXAxisButton = new qx.ui.menu.Button(this.tr("Add X Axis"), null, qx.core.Init.getApplication().projectController.getCommand("addXAxis"));
             var addYAxisButton = new qx.ui.menu.Button(this.tr("Add Y Axis"), null, qx.core.Init.getApplication().projectController.getCommand("addYAxis"));
@@ -38,6 +40,20 @@ qx.Class.define("ae.plotly.ui.Menu",
             
             var axesMenu = new qx.ui.menubar.Button(this.tr("Axes"), null, menuaxes);
             this.add(axesMenu);
+            
+            //Notes
+            var menunotes = new qx.ui.menu.Menu();
+            var addNoteButton = new qx.ui.menu.Button(this.tr("Add Annotation"), null, qx.core.Init.getApplication().projectController.getCommand("addNote"));
+            var removeNoteButton = new qx.ui.menu.Button(this.tr("Remove Annotation"), null, qx.core.Init.getApplication().projectController.getCommand("removeNote"));
+            menunotes.add(addNoteButton);
+            menunotes.add(removeNoteButton);
+            
+            var notesMenu = new qx.ui.menubar.Button(this.tr("Annotations"), null, menunotes);
+            this.add(notesMenu);
+            
+            //Shapes
+            
+            //Legend
             
             //Settings
             var menusettings = new qx.ui.menu.Menu();

@@ -61,20 +61,22 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		
 		/**
 		 * Change styling of an existing plot
-		 * @param update {Object} updated attributes
+		 * @param attribute {Object} attribute string (like 'marker.symbol') and value will be passed in the second argument or attribute object (like '{astr1:val1, astr2:val2...}') allows setting multiple attributes simultaneously and the second argument will be ignored
+		 * @param value {Object} value to give this attribute
 		 * @param traces {Array} integer or array of integers for the traces to alter (all if omitted)
 		 */
-		restyle : function(update,traces){
+		restyle : function(attribute, value, traces){
 			Plotly.restyle(this.getPlotlyDiv(),update,traces)
 			this.setData(this.getPlotlyDiv().data);
 		},
 		
 		/**
 		 * Change layout of an existing plot
-		 * @param update {Object} updated attributes
+		 * @param attribute {Object} attribute string (like 'xaxis.range[0]') and value will be passed in the second argument or attribute object (like '{astr1:val1, astr2:val2...}') allows setting multiple attributes simultaneously and the second argument will be ignored
+		 * @param value {Object} value to give this attribute
 		 */
-		relayout : function(update){
-			Plotly.relayout(this.getPlotlyDiv(),update);
+		relayout : function(attribute, value){
+			Plotly.relayout(this.getPlotlyDiv(),attribute, value);
 			this.setLayout(this.getPlotlyDiv().layout);
 		},
 		

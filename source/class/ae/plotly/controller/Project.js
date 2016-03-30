@@ -93,6 +93,27 @@ qx.Class.define("ae.plotly.controller.Project",{
             	
             }, this);
             
+            commands.addNote = new qx.ui.command.Command();
+            commands.addNote.addListener("execute", function(){
+            	var qxchart = qx.core.Init.getApplication().getChartView();
+            	var newIndex = (qxchart.getLayout().annotations || []).length;
+            	var newAnnotation = {x:0,y:0,text:"new note"};
+            	qxchart.relayout('annotations[' + newIndex + ']', newAnnotation);
+            	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            }, this);
+            
+            commands.removeNote = new qx.ui.command.Command();
+            commands.removeNote.addListener("execute", function(){
+            	var annotation = qx.core.Init.getApplication().getChartView().getSettingsUI().treeController.getSelection().getItem(0);
+            	if(annotation!=null){
+            		if(annotation.getName().substring(0,12)=="annotations["){                    	
+                    	qx.core.Init.getApplication().getChartView().relayout(annotation.getName(),'remove');
+                    	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            		}
+            	}
+            	
+            }, this);
+            
             commands.option = new qx.ui.command.Command();
             commands.option.addListener("execute", function(e){
             	if(!e.getData().getValue()){
