@@ -73,7 +73,7 @@
 	  "core" : {
 	       "add-script" : [
 	         //Use for Script Editor
-	         {"uri": "resource/ae/plotly/plotly.js"},
+	         {"uri": "resource/plotly/plotly.js"},
 	         {"uri": "resource/ae/plotly/saveas.js"}
 	       ]
 	   },
