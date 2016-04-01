@@ -40,7 +40,7 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		this.setDecorator("main");
 
 		this.setSettingsUI(new ae.plotly.ui.Settings(this));
-		
+		this.setBackgroundColor("red");
         this.addListener("resize", function (e) {
         	if(this.getContentElement().getDomElement()){
         		Plotly.Plots.resize(this.getContentElement().getDomElement());
@@ -66,7 +66,7 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 * @param traces {Array} integer or array of integers for the traces to alter (all if omitted)
 		 */
 		restyle : function(attribute, value, traces){
-			Plotly.restyle(this.getPlotlyDiv(),update,traces)
+			Plotly.restyle(this.getPlotlyDiv(),attribute,value,traces)
 			this.setData(this.getPlotlyDiv().data);
 		},
 		
@@ -125,14 +125,22 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 * @param layout {Object} Plotly layout
 		 */
 		plot : function(data,layout){
-			Plotly.newPlot(this.getPlotlyDiv(), data, layout);//,{modeBarButtonsToRemove: ['sendDataToCloud','hoverCompareCartesian'],displaylogo: false} );
+			Plotly.newPlot(this.getPlotlyDiv(), data, layout,{displayModeBar: false} );
 			//Resize
+			var div = this.getContentElement().getDomElement();
+			div.style.valign='middle';
+			div.style.align='center';
+			//div.style.backgroundColor='blue';
+			console.log(div.children);
 			Plotly.Plots.resize(this.getContentElement().getDomElement());
 			
 			this.setData(this.getPlotlyDiv().data);
 			this.setLayout(this.getPlotlyDiv().layout);
 			//Remove modebar
-			document.getElementsByClassName('modebar')[0].style.display="None";			
+			/*if(document.getElementsByClassName('modebar')[0]){
+				document.getElementsByClassName('modebar')[0].style.display="None";	
+			}*/
+					
 			
 			//Get data from extra source parameter
 			for(var i=0;i<data.length;i++){     		

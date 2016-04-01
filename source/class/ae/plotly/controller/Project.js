@@ -40,6 +40,26 @@ qx.Class.define("ae.plotly.controller.Project",{
             	this.savePlotAs();
             }, this);
             
+            commands.addTrace = new qx.ui.command.Command();
+            commands.addTrace.addListener("execute", function(){
+            	var qxchart = qx.core.Init.getApplication().getChartView();
+            	qxchart.addTraces({x:[],y:[]});
+            	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            }, this);
+            
+            commands.removeTrace = new qx.ui.command.Command();
+            commands.removeTrace.addListener("execute", function(){
+            	var qxchart = qx.core.Init.getApplication().getChartView();
+            	var trace = qxchart.getSettingsUI().treeController.getSelection().getItem(0);
+            	if(trace!=null){
+            		if(trace.getName().substring(0,5)=="trace"){
+            			qxchart.deleteTraces(parseInt(trace.getName().split(" ")[1]));
+            			qxchart.getSettingsUI().loadSettings();
+            		}
+            	}
+            	
+            }, this);
+            
             commands.addYAxis = new qx.ui.command.Command();
             commands.addYAxis.addListener("execute", function(){
             	var yaxis=0;

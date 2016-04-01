@@ -28,12 +28,20 @@ qx.Class.define("ae.plotly.ui.Menu",
             this.add(fileMenu);
             
             //Traces
+            var menutraces = new qx.ui.menu.Menu();
+            var addTraceButton = new qx.ui.menu.Button(this.tr("Add trace"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
+            var removeTraceButton = new qx.ui.menu.Button(this.tr("Remove trace"), null, qx.core.Init.getApplication().projectController.getCommand("removeTrace"));
+            menutraces.add(addTraceButton);
+            menutraces.add(removeTraceButton);
+            
+            var tracesMenu = new qx.ui.menubar.Button(this.tr("Traces"), null, menutraces);
+            this.add(tracesMenu);
             
             //Axes
             var menuaxes = new qx.ui.menu.Menu();
-            var addXAxisButton = new qx.ui.menu.Button(this.tr("Add X Axis"), null, qx.core.Init.getApplication().projectController.getCommand("addXAxis"));
-            var addYAxisButton = new qx.ui.menu.Button(this.tr("Add Y Axis"), null, qx.core.Init.getApplication().projectController.getCommand("addYAxis"));
-            var removeAxisButton = new qx.ui.menu.Button(this.tr("Remove Axis"), null, qx.core.Init.getApplication().projectController.getCommand("removeAxis"));
+            var addXAxisButton = new qx.ui.menu.Button(this.tr("Add X axis"), null, qx.core.Init.getApplication().projectController.getCommand("addXAxis"));
+            var addYAxisButton = new qx.ui.menu.Button(this.tr("Add Y axis"), null, qx.core.Init.getApplication().projectController.getCommand("addYAxis"));
+            var removeAxisButton = new qx.ui.menu.Button(this.tr("Remove axis"), null, qx.core.Init.getApplication().projectController.getCommand("removeAxis"));
             menuaxes.add(addXAxisButton);
             menuaxes.add(addYAxisButton);
             menuaxes.add(removeAxisButton);
@@ -43,8 +51,8 @@ qx.Class.define("ae.plotly.ui.Menu",
             
             //Notes
             var menunotes = new qx.ui.menu.Menu();
-            var addNoteButton = new qx.ui.menu.Button(this.tr("Add Annotation"), null, qx.core.Init.getApplication().projectController.getCommand("addNote"));
-            var removeNoteButton = new qx.ui.menu.Button(this.tr("Remove Annotation"), null, qx.core.Init.getApplication().projectController.getCommand("removeNote"));
+            var addNoteButton = new qx.ui.menu.Button(this.tr("Add annotation"), null, qx.core.Init.getApplication().projectController.getCommand("addNote"));
+            var removeNoteButton = new qx.ui.menu.Button(this.tr("Remove annotation"), null, qx.core.Init.getApplication().projectController.getCommand("removeNote"));
             menunotes.add(addNoteButton);
             menunotes.add(removeNoteButton);
             
