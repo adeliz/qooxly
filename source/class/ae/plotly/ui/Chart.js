@@ -7,7 +7,7 @@
  * @ignore(saveAs.*)
  */
 qx.Class.define("ae.plotly.ui.Chart", {
-	extend : qx.ui.core.Widget,
+	extend : qx.ui.container.Scroll,
 
 	properties : {
 		
@@ -39,11 +39,29 @@ qx.Class.define("ae.plotly.ui.Chart", {
 
 		this.setDecorator("main");
 
+		var c = new qx.ui.container.Composite();
+		this.add(c);
+
+		var l = new qx.ui.layout.VBox();
+		c.setLayout(l);
+		l.setAlignX("center");
+		l.setAlignY("middle");
+
+		var w = this.w = new qx.ui.core.Widget().set({
+		  minWidth:800,
+		  minHeight:600
+		});
+		w.setAllowGrowX(false);
+		w.setAllowGrowY(false);
+		c.add(w,{flex:1});
+		
+		this.add(c);
+		
 		this.setSettingsUI(new ae.plotly.ui.Settings(this));
-		this.setBackgroundColor("red");
-        this.addListener("resize", function (e) {
-        	if(this.getContentElement().getDomElement()){
-        		Plotly.Plots.resize(this.getContentElement().getDomElement());
+
+        this.w.addListener("resize", function (e) {
+        	if(this.getPlotlyDiv()){
+        		Plotly.Plots.resize(this.getPlotlyDiv());
         	}
         },this);
         
@@ -56,7 +74,7 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 * @return {Element} Plotly div
 		 */
 		getPlotlyDiv : function(){
-			return this.getContentElement().getDomElement();
+			return this.w.getContentElement().getDomElement();
 		},
 		
 		/**
@@ -126,13 +144,20 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 */
 		plot : function(data,layout){
 			Plotly.newPlot(this.getPlotlyDiv(), data, layout,{displayModeBar: false} );
-			//Resize
-			var div = this.getContentElement().getDomElement();
-			div.style.valign='middle';
-			div.style.align='center';
-			//div.style.backgroundColor='blue';
-			console.log(div.children);
-			Plotly.Plots.resize(this.getContentElement().getDomElement());
+
+			//Resize if needed
+			if(layout.width && layout.height && layout.autosize!=true){
+				this.w.setMinWidth(layout.width);
+				this.w.setMinHeight(layout.height);
+				this.w.setAllowGrowX(false);
+				this.w.setAllowGrowY(false);
+			}else{
+				this.w.setMinWidth(null);
+				this.w.setMinHeight(null);
+				this.w.setAllowGrowX(true);
+				this.w.setAllowGrowY(true);
+			}
+			Plotly.Plots.resize(this.getPlotlyDiv());
 			
 			this.setData(this.getPlotlyDiv().data);
 			this.setLayout(this.getPlotlyDiv().layout);
