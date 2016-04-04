@@ -20,12 +20,12 @@ qx.Class.define("ae.plotly.controller.Project",{
         {
             var commands = {};
             
-            commands.newplot = new qx.ui.command.Command();
+            commands.newplot = new qx.ui.command.Command("Control+N");
             commands.newplot.addListener("execute", function(){
             	qx.core.Init.getApplication().getChartView().plot([],{});
             }, this);
             
-            commands.open = new qx.ui.command.Command();
+            commands.open = new qx.ui.command.Command("Control+O");
             commands.open.addListener("execute", function(){
             	this.openPlot();
             }, this);
@@ -35,7 +35,9 @@ qx.Class.define("ae.plotly.controller.Project",{
             	this.openPlotFromUrl();
             }, this);
             
-            commands.saveas = new qx.ui.command.Command();
+            commands.saveas = new qx.ui.command.Command("Control+S").set({
+				icon : "ae/plotly/icons/saveas.png"
+			});
             commands.saveas.addListener("execute", function(){
             	this.savePlotAs();
             }, this);

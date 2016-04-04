@@ -144,6 +144,7 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 */
 		plot : function(data,layout){
 			Plotly.newPlot(this.getPlotlyDiv(), data, layout,{displayModeBar: false} );
+			//Plotly.newPlot(this.getPlotlyDiv(), data, layout );
 
 			//Resize if needed
 			if(layout.width && layout.height && layout.autosize!=true){
