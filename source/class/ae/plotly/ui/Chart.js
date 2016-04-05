@@ -174,7 +174,6 @@ qx.Class.define("ae.plotly.ui.Chart", {
         		if(src){
         			switch(src.format){
         			case "KDB":
-        				//var url="http://cmhm-sig/api/v1/query?";
         				var url=src.url;
         				for(var key in src.parameters){
         					url=url+key+"="+src.parameters[key]+"&";
