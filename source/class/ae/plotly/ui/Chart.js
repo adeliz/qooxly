@@ -15,14 +15,18 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 * Plotly data
 		 */
 		data: {
-			check : "Object"
+			check : "Object",
+			event : "changeData",
+			init : null
 		},
 		
 		/**
 		 * Plotly layout
 		 */
 		layout:{
-			check : "Object"
+			check : "Object",
+			event : "changeLayout",
+			init : null
 		},
 		
 		/**
@@ -63,9 +67,7 @@ qx.Class.define("ae.plotly.ui.Chart", {
         	if(this.getPlotlyDiv()){
         		Plotly.Plots.resize(this.getPlotlyDiv());
         	}
-        },this);
-        
-        
+        },this);        
 	},
 
 	members : {
@@ -85,7 +87,8 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 */
 		restyle : function(attribute, value, traces){
 			Plotly.restyle(this.getPlotlyDiv(),attribute,value,traces)
-			this.setData(this.getPlotlyDiv().data);
+			this.fireDataEvent("changeData");
+			//this.setData(this.getPlotlyDiv().data);
 		},
 		
 		/**
@@ -95,7 +98,8 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 */
 		relayout : function(attribute, value){
 			Plotly.relayout(this.getPlotlyDiv(),attribute, value);
-			this.setLayout(this.getPlotlyDiv().layout);
+			this.fireDataEvent("changeLayout");
+			//this.setLayout(this.getPlotlyDiv().layout);
 		},
 		
 		/**
@@ -105,7 +109,8 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 */
 		addTraces : function(traces,indices){
 			Plotly.addTraces(this.getPlotlyDiv(),traces,indices);
-			this.setData(this.getPlotlyDiv().data);
+			this.fireDataEvent("changeData");
+			//this.setData(this.getPlotlyDiv().data);
 		},
 		
 		/**
@@ -114,7 +119,8 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 */
 		deleteTraces : function(indices){
 			Plotly.deleteTraces(this.getPlotlyDiv(),indices);
-			this.setData(this.getPlotlyDiv().data);
+			this.fireDataEvent("changeData");
+			//this.setData(this.getPlotlyDiv().data);
 		},
 		
 		/**
@@ -124,7 +130,8 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 */
 		moveTraces : function(currentindices,newindices){
 			Plotly.moveTraces(this.getPlotlyDiv(),currentindices,newindices);
-			this.setData(this.getPlotlyDiv().data);
+			this.fireDataEvent("changeData");
+			//this.setData(this.getPlotlyDiv().data);
 		},
 		
 		

@@ -79,13 +79,9 @@ qx.Class.define("ae.plotly.ui.Settings", {
         		/*editor.on('change',function(){
             		ed.getModel().getNotification().setScript(editor.getSession().getValue());
             	});*/
-            	editor.getSession().setValue("var data = {\n"+
-					"    marker:{\n"+
-					"        size: 4\n"+
-					"    }\n"+
-					"\n}"+
-					"\n"+
-					"Qooxly.restyle(data);");
+        	var qxchart = qx.core.Init.getApplication().getChartView();
+        	var json = JSON.stringify({"data":qxchart.getData(),"layout":qxchart.getLayout()}, null, '\t');
+            	editor.getSession().setValue(json);
 
         	
 		},this);
@@ -119,6 +115,21 @@ qx.Class.define("ae.plotly.ui.Settings", {
         composite.add(loadButton);
         composite.add(plotButton);
         jsoneditor.add(composite);
+        this.chart.addListener("changeData",function(e){
+        	var qxchart = qx.core.Init.getApplication().getChartView();
+        	var json = JSON.stringify({"data":qxchart.getData(),"layout":qxchart.getLayout()}, null, '\t');
+        	if(this._ace){
+        		this._ace.getSession().setValue(json);
+        	}
+        	
+        },this);
+        this.chart.addListener("changeLayout",function(e){
+        	var qxchart = qx.core.Init.getApplication().getChartView();
+        	var json = JSON.stringify({"data":qxchart.getData(),"layout":qxchart.getLayout()}, null, '\t');
+        	if(this._ace){
+        		this._ace.getSession().setValue(json);
+        	}
+        },this);
         //END JSON EDITOR------------------------------
         
         //CODE EDITOR------------------------------

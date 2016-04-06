@@ -166,13 +166,17 @@ qx.Class.define("ae.plotly.ui.Form", {
 			
 			switch(this.param.getMethod()){
 				case "restyle":
-					Plotly.restyle(this.chart.getPlotlyDiv(),JSON.parse(path),this.param.getTrace());
+					//Plotly.restyle(this.chart.getPlotlyDiv(),JSON.parse(path),this.param.getTrace());
+					this.chart.restyle(JSON.parse(path),this.param.getTrace());
 					break;
 				case "relayout":
-					Plotly.relayout(this.chart.getPlotlyDiv(),JSON.parse(path));
+					//Plotly.relayout(this.chart.getPlotlyDiv(),JSON.parse(path));
+					console.log(this.chart);
+					this.chart.relayout(JSON.parse(path));
 					break;
 				case "retype":
-					Plotly.restyle(this.chart.getPlotlyDiv(),JSON.parse(path),this.param.getTrace());
+					//Plotly.restyle(this.chart.getPlotlyDiv(),JSON.parse(path),this.param.getTrace());
+					this.chart.restyle(JSON.parse(path),this.param.getTrace());
 					this.chart.getSettingsUI().loadSettings();
 					break;
 			}
