@@ -64,14 +64,22 @@ qx.Class.define("ae.plotly.ui.Menu",
             //Legend
             
             //Settings
-            var menusettings = new qx.ui.menu.Menu();
-            var configButton = new qx.ui.menu.CheckBox(this.tr("Show/Hide editor"));
-            configButton.setValue(true);
-            configButton.setCommand(qx.core.Init.getApplication().projectController.getCommand("option"));
-            menusettings.add(configButton);
+            /*var menusettings = new qx.ui.menu.Menu();
+            var treeButton = new qx.ui.menu.RadioButton(this.tr("Tree Editor"));
+            treeButton.setUserData("value", "tree");
+            var jsonButton = new qx.ui.menu.RadioButton(this.tr("JSON Code"));
+            jsonButton.setUserData("value", "json");
+            var consoleButton = new qx.ui.menu.RadioButton(this.tr("Console"));
+            consoleButton.setUserData("value", "console");
+            menusettings.add(treeButton);
+            menusettings.add(jsonButton);
+            menusettings.add(consoleButton);
+            var radioGroup = new qx.ui.form.RadioGroup(treeButton,jsonButton,consoleButton);
+            radioGroup.setAllowEmptySelection(true);
+            treeButton.setValue(false);
             
             var settingsMenu = new qx.ui.menubar.Button(this.tr("Settings"), null, menusettings);
-            this.add(settingsMenu);
+            this.add(settingsMenu);*/
             
             //Help
             var menuhelp = new qx.ui.menu.Menu();
@@ -84,5 +92,9 @@ qx.Class.define("ae.plotly.ui.Menu",
 
             var helpMenu = new qx.ui.menubar.Button(this.tr("Help"), null, menuhelp);
             this.add(helpMenu);
+        },
+        
+        members  :{
+
         }
     });

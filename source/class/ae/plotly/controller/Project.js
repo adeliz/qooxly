@@ -136,18 +136,6 @@ qx.Class.define("ae.plotly.controller.Project",{
             	
             }, this);
             
-            commands.option = new qx.ui.command.Command();
-            commands.option.addListener("execute", function(e){
-            	if(!e.getData().getValue()){
-            		//activate
-            		qx.core.Init.getApplication().getChartView().getSettingsUI().show();
-                }else{
-                	//deactivate
-                	qx.core.Init.getApplication().getChartView().getSettingsUI().exclude();
-                }
-                //this.configure();
-            }, this);
-
             commands.help = new qx.ui.command.Command("F1");
             commands.help.setEnabled(false);
             

@@ -29,7 +29,7 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		 * Settings user interface
 		 */
 		settingsUI: {
-			check : "qx.ui.container.Composite"
+			check : "qx.ui.container.Stack"
 			
 		}
 	},

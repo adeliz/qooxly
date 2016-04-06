@@ -136,11 +136,10 @@ qx.Class.define("ae.plotly.Application", {
 	        splitpane.getChildControl("splitter").setBackgroundColor("white");
 	        
 	        var qxchart = new ae.plotly.ui.Chart();
-	        window.QOOXLY={};
-	        window.QOOXLY.chart = qxchart;
+	        window.Qooxly=qxchart;
 	        this.setChartView(qxchart);
 	        
-	        splitpane.add(this.getChartView(), 1);
+	        splitpane.add(this.getChartView(), 2);
 			splitpane.add(qxchart.getSettingsUI(), 0);
 			//qxchart.getSettingsUI().exclude();
 			

@@ -129,20 +129,82 @@ qx.Class.define("ae.plotly.ui.ToolBar",{
         hovermodePart.add(closestButton);
         hovermodePart.add(falseButton);
         
-        //Editor part
-        var editorPart = new qx.ui.toolbar.Part();
-
-        var settingsButton = new qx.ui.toolbar.CheckBox(this.tr("Editor"),"ae/plotly/icons/link.png");
-        settingsButton.setCommand(projectController.getCommand("option"));
-        settingsButton.setValue(true);
-        editorPart.add(settingsButton);
+        this.addSpacer();
+        var viewPart = new qx.ui.toolbar.Part();
+        this.add(viewPart);
         
-        this.add(editorPart);
+		var treeView = new qx.ui.toolbar.RadioButton("Tree Editor","ae/plotly/icons/tree.png").set({
+            //show:"icon",
+            toolTipText:this.tr("Tree editor")
+        });
+		treeView.setModel('tree');
+		var jsonView = new qx.ui.toolbar.RadioButton("JSON Editor","ae/plotly/icons/json.png").set({
+            //show:"icon",
+            toolTipText:this.tr("Json editor")
+        });
+		jsonView.setModel('json');
+		
+		treeView.setUserData("value", "tree");
+		jsonView.setUserData("value", "json");
+		
+		viewPart.add(treeView);
+		viewPart.add(jsonView);
+
+        var consoleView = new qx.ui.toolbar.RadioButton("Code Editor","ae/plotly/icons/code.png").set({
+            //show:"icon",
+            toolTipText:this.tr("Code Editor")
+        });
+
+        consoleView.setUserData("value", "console");
+        consoleView.setModel('console');
+
+        viewPart.add(consoleView);
+
+        var viewGroup = this.__viewGroup = new qx.ui.form.RadioGroup;
+        viewGroup.setAllowEmptySelection(true);
+        viewGroup.add(treeView,jsonView,consoleView);
+        
+        viewGroup.addListener('changeSelection',this.__syncRightView,this);
         
     },
     
     members : {
-    	
+		
+		/**
+	     * TODOC
+	     *
+	     */
+	    __syncRightView :  function(e)
+	    {
+	      //var theOtherGroup = e.getTarget()===this.__viewGroup ? this.__menuViewRadioGroup : this.__viewGroup;
+	      var selected = e.getData()[0];
+	      /*if(theOtherGroup && selected) {
+	        theOtherGroup.setModelSelection([selected.getModel()]);
+	      }*/
+	      var stack = qx.core.Init.getApplication().getChartView().getSettingsUI();
+	      var show = selected != null ? selected.getUserData("value") : "";
+	      switch(show)
+	      {
+	        case "tree":
+	        	stack.setSelection([qx.core.Init.getApplication().getChartView().getSettingsUI().__treeView]);
+	        	stack.show();
+	        	break;
+
+	        case "json":
+	        	stack.setSelection([qx.core.Init.getApplication().getChartView().getSettingsUI().__jsonView]);
+	        	stack.show();
+	        	break;
+
+	        case "console":
+	        	stack.setSelection([qx.core.Init.getApplication().getChartView().getSettingsUI().__consoleView]);
+	        	stack.show();
+	        	break;
+
+	        default:
+	        	stack.resetSelection();
+	        	stack.exclude();
+	      }
+	    }
     }
     
     

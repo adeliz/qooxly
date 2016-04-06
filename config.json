@@ -74,6 +74,7 @@
 	       "add-script" : [
 	         //Use for Script Editor
 	         {"uri": "resource/plotly/plotly.js"},
+	         {"uri": "resource/ace/ace.js"},
 	         {"uri": "resource/ae/plotly/saveas.js"}
 	       ]
 	   },
