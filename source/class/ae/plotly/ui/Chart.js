@@ -23,18 +23,20 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		/**
 		 * Plotly layout
 		 */
-		layout:{
+		layout: {
 			check : "Object",
 			event : "changeLayout",
 			init : null
 		},
 		
 		/**
-		 * Settings user interface
+		 * Schema
+		 * only used to fire tree reloading when needed (search 'fireDataEvent("changeSchema")'
 		 */
-		settingsUI: {
-			check : "qx.ui.container.Stack"
-			
+		schema: {
+			check : "Object",
+			event : "changeSchema",
+			init : null
 		}
 	},
 
@@ -60,8 +62,6 @@ qx.Class.define("ae.plotly.ui.Chart", {
 		c.add(w,{flex:1});
 		
 		this.add(c);
-		
-		this.setSettingsUI(new ae.plotly.ui.Settings(this));
 
         this.w.addListener("resize", function (e) {
         	if(this.getPlotlyDiv()){
@@ -190,7 +190,8 @@ qx.Class.define("ae.plotly.ui.Chart", {
         			}
         		}
         	}
-			this.getSettingsUI().loadSettings();
+			
+			this.fireDataEvent("changeSchema");
 		},
 		
 		/**

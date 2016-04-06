@@ -46,17 +46,17 @@ qx.Class.define("ae.plotly.controller.Project",{
             commands.addTrace.addListener("execute", function(){
             	var qxchart = qx.core.Init.getApplication().getChartView();
             	qxchart.addTraces({x:[],y:[]});
-            	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
             }, this);
             
             commands.removeTrace = new qx.ui.command.Command();
             commands.removeTrace.addListener("execute", function(){
             	var qxchart = qx.core.Init.getApplication().getChartView();
-            	var trace = qxchart.getSettingsUI().treeController.getSelection().getItem(0);
+            	var trace = qx.core.Init.getApplication()._stack.__treeView.treeController.getSelection().getItem(0);
             	if(trace!=null){
             		if(trace.getName().substring(0,5)=="trace"){
             			qxchart.deleteTraces(parseInt(trace.getName().split(" ")[1]));
-            			qxchart.getSettingsUI().loadSettings();
+            			qxchart.fireDataEvent("changeSchema");
             		}
             	}
             	
@@ -78,7 +78,7 @@ qx.Class.define("ae.plotly.controller.Project",{
 				var obj = {};
 				obj["yaxis"+(yaxis+1)]={"anchor":"x","overlaying":"y"};
             	qx.core.Init.getApplication().getChartView().relayout(obj);
-            	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
             }, this);
             
             commands.addXAxis = new qx.ui.command.Command();
@@ -97,19 +97,19 @@ qx.Class.define("ae.plotly.controller.Project",{
 				var obj = {};
 				obj["xaxis"+(xaxis+1)]={"anchor":"y","overlaying":"x"};
             	qx.core.Init.getApplication().getChartView().relayout(obj);
-            	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
             }, this);
             
             commands.removeAxis = new qx.ui.command.Command();
             commands.removeAxis.addListener("execute", function(){
-            	var axis = qx.core.Init.getApplication().getChartView().getSettingsUI().treeController.getSelection().getItem(0);
+            	var axis = qx.core.Init.getApplication()._stack.__treeView.treeController.getSelection().getItem(0);
             	if(axis!=null){
             		if(axis.getName().substring(0,5)=="xaxis" || axis.getName().substring(0,5)=="yaxis" ){
                     	var obj = {};
                     	obj[axis.getName()]=null;
                     	
                     	qx.core.Init.getApplication().getChartView().relayout(obj);
-                    	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+                    	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
             		}
             	}
             	
@@ -121,16 +121,16 @@ qx.Class.define("ae.plotly.controller.Project",{
             	var newIndex = (qxchart.getLayout().annotations || []).length;
             	var newAnnotation = {x:0,y:0,text:"new note"};
             	qxchart.relayout('annotations[' + newIndex + ']', newAnnotation);
-            	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+            	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
             }, this);
             
             commands.removeNote = new qx.ui.command.Command();
             commands.removeNote.addListener("execute", function(){
-            	var annotation = qx.core.Init.getApplication().getChartView().getSettingsUI().treeController.getSelection().getItem(0);
+            	var annotation = qx.core.Init.getApplication()._stack.__treeView.treeController.getSelection().getItem(0);
             	if(annotation!=null){
             		if(annotation.getName().substring(0,12)=="annotations["){                    	
                     	qx.core.Init.getApplication().getChartView().relayout(annotation.getName(),'remove');
-                    	qx.core.Init.getApplication().getChartView().getSettingsUI().loadSettings();
+                    	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
             		}
             	}
             	
@@ -366,79 +366,6 @@ qx.Class.define("ae.plotly.controller.Project",{
 			}, this);
         },
         
-        configure : function(){
-            var win = this.win = new qx.ui.window.Window("Settings").set({
-            	margin:0,
-            	padding:0
-            });
-            win.setLayout(new qx.ui.layout.VBox());
-            //win.setShowStatusbar(true);
-            //win.setStatus("Status bar");
-            win.setShowMinimize(false);
-            win.setShowMaximize(false);
-            //win.setModal(true);
-            win.setMinWidth(400);
-            win.setMinHeight(600);
-            
-
-            win.moveTo(10,120);
-            //win.center()
-            /*win.addListener("resize", function () {
-                this.center();
-            }, win);*/
-
-            var toolbar  = qx.core.Init.getApplication().getToolBar();
-            
-            var pane = new qx.ui.container.Composite(new qx.ui.layout.VBox()).set({
-    			//paddingTop:10,
-    			decorator:"main"
-    		});
-
-    		pane.addListenerOnce("appear",function(){
-        		var editor = this._ace = window.ace.edit(pane.getContentElement().getDomElement());
-            	editor.getSession().setMode("ace/mode/javascript");
-            	var ed = this._editor;
-            		/*editor.on('change',function(){
-	            		ed.getModel().getNotification().setScript(editor.getSession().getValue());
-	            	});*/
-	            	editor.getSession().setValue("var data = {\n"+
-						"    marker:{\n"+
-						"        size: 4\n"+
-						"    }\n"+
-						"\n}"+
-						"\n"+
-						"qxPlotly.restyle(data);");
-
-            	
-    		},this);
-
-    		pane.addListener("appear",function(){
-        		this._ace.resize();
-    		},this);
- 
-
-            //win.add(pane,{flex:1});
-            win.add(qx.core.Init.getApplication().getChartView().qxchart.getSettingsUI(),{flex:1});
-            var composite = new qx.ui.container.Composite().set({
-                marginTop: 8
-            });
-            composite.setLayout(new qx.ui.layout.HBox().set({
-                spacing: 4,
-                alignX: "right"
-            }));
-            var cancelButton = new qx.ui.form.Button("Apply");
-            cancelButton.addListener("click", function (e) {
-            	eval(this._ace.getSession().getValue().replace("qxPlotly","qx.core.Init.getApplication().getChartView()"));
-            }, this);
-
-            composite.add(cancelButton);
-            win.add(composite);
-            qx.core.Init.getApplication().getRoot().add(win);
-            qx.core.Init.getApplication().getRoot().setBlockerColor("#aaa");
-            qx.core.Init.getApplication().getRoot().setBlockerOpacity(0.5);
-            win.open();
-        },
-
         about : function(){
             var win = this.win = new qx.ui.window.Window(this.tr("About")).set({
                 width:300,

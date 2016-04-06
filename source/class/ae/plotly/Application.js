@@ -136,12 +136,25 @@ qx.Class.define("ae.plotly.Application", {
 	        splitpane.getChildControl("splitter").setBackgroundColor("white");
 	        
 	        var qxchart = new ae.plotly.ui.Chart();
+	        
 	        window.Qooxly=qxchart;
 	        this.setChartView(qxchart);
-	        
+
 	        splitpane.add(this.getChartView(), 2);
-			splitpane.add(qxchart.getSettingsUI(), 0);
-			//qxchart.getSettingsUI().exclude();
+	        
+	        var stack = this._stack = new qx.ui.container.Stack();
+	        stack.__treeView = new qx.ui.container.Composite();//new ae.plotly.ui.editor.Tree(qxchart);
+	        stack.__jsonView = new ae.plotly.ui.editor.Json(qxchart);
+	        stack.__consoleView = new ae.plotly.ui.editor.Code(qxchart);
+
+		    //stack.setDecorator("main");
+			stack.add(stack.__treeView );
+			stack.add(stack.__jsonView);
+			stack.add(stack.__consoleView);
+			stack.resetSelection();
+			stack.exclude();
+			
+			splitpane.add(stack, 0);
 			
 	        workbench.add(splitpane, {flex : 1});
 

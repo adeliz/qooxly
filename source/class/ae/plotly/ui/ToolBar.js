@@ -181,22 +181,22 @@ qx.Class.define("ae.plotly.ui.ToolBar",{
 	      /*if(theOtherGroup && selected) {
 	        theOtherGroup.setModelSelection([selected.getModel()]);
 	      }*/
-	      var stack = qx.core.Init.getApplication().getChartView().getSettingsUI();
+	      var stack = qx.core.Init.getApplication()._stack;
 	      var show = selected != null ? selected.getUserData("value") : "";
 	      switch(show)
 	      {
 	        case "tree":
-	        	stack.setSelection([qx.core.Init.getApplication().getChartView().getSettingsUI().__treeView]);
+	        	stack.setSelection([qx.core.Init.getApplication()._stack.__treeView]);
 	        	stack.show();
 	        	break;
 
 	        case "json":
-	        	stack.setSelection([qx.core.Init.getApplication().getChartView().getSettingsUI().__jsonView]);
+	        	stack.setSelection([qx.core.Init.getApplication()._stack.__jsonView]);
 	        	stack.show();
 	        	break;
 
 	        case "console":
-	        	stack.setSelection([qx.core.Init.getApplication().getChartView().getSettingsUI().__consoleView]);
+	        	stack.setSelection([qx.core.Init.getApplication()._stack.__consoleView]);
 	        	stack.show();
 	        	break;
 

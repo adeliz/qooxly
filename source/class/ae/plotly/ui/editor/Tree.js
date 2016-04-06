@@ -1,10 +1,6 @@
-/**
- * Chart settings
- * 
- */
-qx.Class.define("ae.plotly.ui.Settings", {
+qx.Class.define("ae.plotly.ui.editor.Tree", {
 	
-	extend : qx.ui.container.Stack,
+	extend : qx.ui.container.Composite,
 
 	/**
 	 * Create a user interface for the chart's settings
@@ -12,11 +8,13 @@ qx.Class.define("ae.plotly.ui.Settings", {
 	 */
 	construct : function(chart) {
 		this.base(arguments);
-		this.setWidth(300);
 		this.setDecorator("main");
-
-		this.chart=chart;
-			
+		this.setWidth(300);
+		
+		this.chart = chart;
+		this.chart.addListener("changeSchema",function(e){
+			this.loadSettings();
+		},this);
 		var filterProp = this.filterProp = new qx.ui.form.TextField().set({
 			placeholder:"Filter...",
 			margin:5
@@ -56,145 +54,12 @@ qx.Class.define("ae.plotly.ui.Settings", {
 		form.setLayout(new qx.ui.layout.VBox());
 		
 		
-		var comp = this.__treeView = new qx.ui.container.Composite();
 		var layout = new qx.ui.layout.VBox();
-		comp.setLayout(layout);
+		this.setLayout(layout);
 		layout.setSeparator("separator-vertical");
-		comp.add(filterProp);
-		comp.add(tree,{flex:1});
-		comp.add(form,{flex:1});
-		
-		//JSON EDITOR------------------------------
-		var jsoneditor = new qx.ui.container.Composite();
-		var lyt = new qx.ui.layout.VBox();
-		jsoneditor.setLayout(lyt);
-		lyt.setSeparator("separator-vertical");
-		var pane = new qx.ui.container.Composite(new qx.ui.layout.VBox()).set({
-		});
-
-		pane.addListenerOnce("appear",function(){
-    		var editor = this._ace = window.ace.edit(pane.getContentElement().getDomElement());
-        	editor.getSession().setMode("ace/mode/javascript");
-        	var ed = this._editor;
-        		/*editor.on('change',function(){
-            		ed.getModel().getNotification().setScript(editor.getSession().getValue());
-            	});*/
-        	var qxchart = qx.core.Init.getApplication().getChartView();
-        	var json = JSON.stringify({"data":qxchart.getData(),"layout":qxchart.getLayout()}, null, '\t');
-            	editor.getSession().setValue(json);
-
-        	
-		},this);
-
-		pane.addListener("appear",function(){
-    		this._ace.resize();
-		},this);
-
-
-		jsoneditor.add(pane,{flex:1});
-        var composite = new qx.ui.container.Composite().set({
-            margin: 4
-        });
-        composite.setLayout(new qx.ui.layout.HBox().set({
-            spacing: 4,
-            alignX: "right"
-        }));
-        var plotButton = new qx.ui.form.Button("Plot");
-        plotButton.addListener("click", function (e) {
-        	var json = JSON.parse(this._ace.getSession().getValue());
-        	qx.core.Init.getApplication().getChartView().plot(json.data,json.layout);
-        }, this);
-        
-        var loadButton = new qx.ui.form.Button("Get JSON");
-        loadButton.addListener("click", function (e) {
-        	var qxchart = qx.core.Init.getApplication().getChartView();
-        	var json = JSON.stringify({"data":qxchart.getData(),"layout":qxchart.getLayout()}, null, '\t');
-        	this._ace.getSession().setValue(json);
-        }, this);
-
-        composite.add(loadButton);
-        composite.add(plotButton);
-        jsoneditor.add(composite);
-        this.chart.addListener("changeData",function(e){
-        	var qxchart = qx.core.Init.getApplication().getChartView();
-        	var json = JSON.stringify({"data":qxchart.getData(),"layout":qxchart.getLayout()}, null, '\t');
-        	if(this._ace){
-        		this._ace.getSession().setValue(json);
-        	}
-        	
-        },this);
-        this.chart.addListener("changeLayout",function(e){
-        	var qxchart = qx.core.Init.getApplication().getChartView();
-        	var json = JSON.stringify({"data":qxchart.getData(),"layout":qxchart.getLayout()}, null, '\t');
-        	if(this._ace){
-        		this._ace.getSession().setValue(json);
-        	}
-        },this);
-        //END JSON EDITOR------------------------------
-        
-        //CODE EDITOR------------------------------
-        var codeeditor = new qx.ui.container.Composite();
-		var lyt2 = new qx.ui.layout.VBox();
-		codeeditor.setLayout(lyt2);
-		lyt2.setSeparator("separator-vertical");
-		var pane2 = new qx.ui.container.Composite(new qx.ui.layout.VBox()).set({
-		});
-
-		pane2.addListenerOnce("appear",function(){
-    		var editor2 = this._ace2 = window.ace.edit(pane2.getContentElement().getDomElement());
-        	editor2.getSession().setMode("ace/mode/javascript");
-        	//var ed = this._editor;
-        		/*editor.on('change',function(){
-            		ed.getModel().getNotification().setScript(editor.getSession().getValue());
-            	});*/
-            	editor2.getSession().setValue("var data = {\n"+
-					"    marker:{\n"+
-					"        size: 4\n"+
-					"    }\n"+
-					"\n}"+
-					"\n"+
-					"Qooxly.restyle(data);");
-
-        	
-		},this);
-
-		pane2.addListener("appear",function(){
-    		this._ace2.resize();
-		},this);
-
-
-		codeeditor.add(pane2,{flex:1});
-        var composite2 = new qx.ui.container.Composite().set({
-            margin: 4
-        });
-        composite2.setLayout(new qx.ui.layout.HBox().set({
-            spacing: 4,
-            alignX: "right"
-        }));
-        var runButton = new qx.ui.form.Button("Run");
-        runButton.addListener("click", function (e) {
-        	eval(this._ace2.getSession().getValue());
-        }, this);
-
-        composite2.add(runButton);
-        codeeditor.add(composite2);
-        //END CODE EDITOR------------------------------
-		this.__treeView = comp;
-		this.__jsonView = jsoneditor;
-		this.__consoleView = codeeditor;
-		//this.loadSettings();
-
-
-	    //stack.setDecorator("main");
-		this.add(this.__treeView );
-		this.add(this.__jsonView);
-		this.add(this.__consoleView);
-		this.resetSelection();
-		this.exclude();
-		//this.setDynamic(true);
-
-	    //this.setBackgroundColor("blue");
-	    //this.add(stack, {flex:1})
+		this.add(filterProp);
+		this.add(tree,{flex:1});
+		this.add(form,{flex:1});
 	},
 	
 	members:{

@@ -10,7 +10,7 @@ qx.Class.define("ae.plotly.ui.Form", {
 
 	/**
 	 * Create a new form
-	 * @param param  {qx.core.Object} object that describe the parameter. See code of {@link ae.plotly.ui.Settings#loadSettings loadSettings} method
+	 * @param param  {qx.core.Object} object that describe the parameter. See code of {@link ae.plotly.ui.editor.Tree#loadSettings loadSettings} method
 	 * @param chart  {ae.plotly.ui.Chart} The chart widget
 	 */
 	construct : function(param,chart) {
@@ -166,18 +166,14 @@ qx.Class.define("ae.plotly.ui.Form", {
 			
 			switch(this.param.getMethod()){
 				case "restyle":
-					//Plotly.restyle(this.chart.getPlotlyDiv(),JSON.parse(path),this.param.getTrace());
 					this.chart.restyle(JSON.parse(path),this.param.getTrace());
 					break;
 				case "relayout":
-					//Plotly.relayout(this.chart.getPlotlyDiv(),JSON.parse(path));
-					console.log(this.chart);
 					this.chart.relayout(JSON.parse(path));
 					break;
 				case "retype":
-					//Plotly.restyle(this.chart.getPlotlyDiv(),JSON.parse(path),this.param.getTrace());
 					this.chart.restyle(JSON.parse(path),this.param.getTrace());
-					this.chart.getSettingsUI().loadSettings();
+					this.chart.fireDataEvent("changeSchema");
 					break;
 			}
 		}
