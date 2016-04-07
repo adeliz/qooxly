@@ -27,17 +27,19 @@ qx.Class.define("ae.plotly.ui.editor.Tree", {
 		
 		
 		
-		//var tree = this.tree =  new qx.ui.tree.VirtualTree(null, "name", "kids");
-		var tree = this.tree = new qx.ui.tree.Tree().set({
+		var tree = this.tree =  new qx.ui.tree.VirtualTree(null, "name", "kids").set({
 			decorator:null
 		});
+		/*var tree = this.tree = new qx.ui.tree.Tree().set({
+			decorator:null
+		});*/
 		
 		
 		var treeController = this.treeController = new qx.data.controller.Tree(null, tree, "kids", "name");
-		treeController.addListener("changeSelection",function(e){
-		//tree.getSelection().addListener("change", function(e) {
-			var selected = e.getData().getItem(0);
-			//var selected = tree.getSelection().getItem(0);
+		//treeController.addListener("changeSelection",function(e){
+		tree.getSelection().addListener("change", function(e) {
+			//var selected = e.getData().getItem(0);
+			var selected = tree.getSelection().getItem(0);
 			if(selected){
 				var clazz = qx.Class.getByName(selected.classname); 
 				var props = qx.Class.getProperties(clazz); 
@@ -76,7 +78,97 @@ qx.Class.define("ae.plotly.ui.editor.Tree", {
 		 * @param term {String} String used for filtering
 		 */
 		filter : function(term){
-			var searchRegExp = new RegExp("^.*" + term + ".*", "ig");
+			
+			//@todo use regex!!
+			term = term.replace("[","\\\[");
+			term = term.replace("]","\\\]");
+			
+			if(this.myschema){
+				var currentPath = [];
+
+				function depthFirstTraversal(o, fn) {
+				    currentPath.push(o);
+				    if(o.kids) {
+				        for(var i = 0, len = o.kids.length; i < len; i++) {
+				            depthFirstTraversal(o.kids[i], fn);
+				        }
+				    }
+				    fn.call(null, o, currentPath);
+				    currentPath.pop();
+				}
+
+				function shallowCopy(o) {
+				    var result = {};
+				    for(var k in o) {
+				        if(o.hasOwnProperty(k)) {
+				            result[k] = o[k];
+				        }
+				    }
+				    return result;
+				}
+
+				function copyNode(node) {
+				    var n = shallowCopy(node);
+				    if(n.kids) { n.kids = []; }
+				    return n;
+				}
+
+				function filterTree(root, term) {
+				    root.copied = copyNode(root); // create a copy of root
+				    var filteredResult = root.copied;
+
+				    depthFirstTraversal(root, function(node, branch) {
+				        // if this is a leaf node _and_ we are looking for its ID
+				    	//console.log(node.fullpath);
+				        //if( !node.kids && node.name.search(term) !== -1 ) {
+				    	if( node.fullpath.search(term) !== -1 ) {
+				            // use the path that the depthFirstTraversal hands us that
+				            // leads to this leaf.  copy any part of this branch that
+				            // hasn't been copied, at minimum that will be this leaf
+				            for(var i = 0, len = branch.length; i < len; i++) {
+				                if(branch[i].copied) { continue; } // already copied
+
+				                branch[i].copied = copyNode(branch[i]);
+				                // now attach the copy to the new 'parellel' tree we are building
+				                branch[i-1].copied.kids.push(branch[i].copied);
+				            }
+				        }
+				    });
+
+				    depthFirstTraversal(root, function(node, branch) {
+				        delete node.copied; // cleanup the mutation of the original tree
+				    });
+
+				    return filteredResult;
+				}
+			}
+			
+			var model = qx.data.marshal.Json.createModel(filterTree(this.myschema,term),true);
+			this.tree.setModel(model);
+
+			var vt = this.tree;
+
+			var openNodes = function(node){
+				var children;
+				try {
+					children = node.get("kids");
+				} catch (ex) {
+					children = null;
+				}
+				        
+				if (children) {
+					for (var i = children.length - 1; i >= 0; i--) {
+						openNodes(children.getItem(i));
+					}
+				}
+				vt.openNodeWithoutScrolling(node);
+			};
+
+
+			openNodes(this.tree.getModel());
+
+			//Version used with classical tree
+			/*var searchRegExp = new RegExp("^.*" + term + ".*", "ig");
 			
 			var matches = new qx.data.Array();
 			
@@ -127,7 +219,7 @@ qx.Class.define("ae.plotly.ui.editor.Tree", {
 					folder.setOpen(false);
 					folder.show();
 				}
-			}
+			}*/
 		},
 		
 		/**
@@ -145,13 +237,13 @@ qx.Class.define("ae.plotly.ui.editor.Tree", {
 				for (var key in schema.traces) {
 					types.push(key);
 				}
-				var layout={"name":"Layout","kids":[]};
+				var layout={"name":"Layout","kids":[],"fullpath":"/Chart/Layout"};
 				this.walk(schema.layout.layoutAttributes,layout,["xaxis","yaxis","radialaxis","annotations","shapes"],"relayout",null);
 				
-				var data={"name":"Traces","kids":[]};
+				var data={"name":"Traces","kids":[],"fullpath":"/Chart/Traces"};
 				var traces = this.chart.getPlotlyDiv().data;
 				for(var i=0;i<traces.length;i++){
-					var trace = {"name":"trace "+i,"kids":[]};
+					var trace = {"name":"trace "+i,"kids":[],"fullpath":"/Chart/Traces/trace "+i};
 					if(!traces[i].type){
 						traces[i].type="scatter";
 					}
@@ -160,11 +252,11 @@ qx.Class.define("ae.plotly.ui.editor.Tree", {
 			            "values": types,
 			                     "valType": "enumerated",
 			                     "role": "info"
-			                   },"path":"/type","method":"retype","trace":i});
+			                   },"path":"/type","fullpath":"/Chart/Traces/trace "+i+"/type","method":"retype","trace":i});
 					data.kids.push(trace);
 				}
 				
-				var axes={"name":"Axes","kids":[]};
+				var axes={"name":"Axes","kids":[],"fullpath":"/Chart/Axes"};
 				var ptaxes = this.chart.getPlotlyDiv().layout;
 				var xaxis=0,yaxis=0;
 				for (var key in ptaxes) {
@@ -196,11 +288,11 @@ qx.Class.define("ae.plotly.ui.editor.Tree", {
 				}
 	
 				
-				var notes={"name":"Notes","kids":[]};
+				var notes={"name":"Notes","kids":[],"fullpath":"/Chart/Notes"};
 				var ptnotes = this.chart.getPlotlyDiv().layout.annotations;
 				if(ptnotes!=null){
 					for(var i=0;i<ptnotes.length;i++){
-						var note = {};
+						var note = {"fullpath":"/Chart/Notes/annotations["+i+"]"};
 						note["annotations["+i+"]"]=schema.layout.layoutAttributes.annotations.items.annotation;
 						this.walk(note,notes,[],"relayout",null);
 					}
@@ -217,7 +309,7 @@ qx.Class.define("ae.plotly.ui.editor.Tree", {
 					}
 				}*/
 				
-				var myschema =
+				var myschema = this.myschema =
 				{
 					"name":"Chart",
 					"kids":[
@@ -227,19 +319,21 @@ qx.Class.define("ae.plotly.ui.editor.Tree", {
 					        notes/*,
 					        shapes,
 					        legend*/
-					]
+					],
+					"fullpath":"/Chart"
 				};
 				
-				var model = qx.data.marshal.Json.createModel(myschema);
+				//var model = qx.data.marshal.Json.createModel(myschema);
+				var model = qx.data.marshal.Json.createModel(myschema,true);
 				
 				//@todo : It takes too long!! Use virtualTree instead?
 				//var dt1  = new Date().getTime();
-				this.treeController.setModel(model);
-				//this.tree.setModel(model);
+				//this.treeController.setModel(model);
+				this.tree.setModel(model);
 				//var dt2  = new Date().getTime();
 				//console.log((dt2-dt1)/1000);
 				
-				this.tree.getRoot().setOpen(true);
+				//this.tree.getRoot().setOpen(true);
 				//this.tree.setHideRoot(true);
 			},this);
 			req.send();
@@ -268,21 +362,23 @@ qx.Class.define("ae.plotly.ui.editor.Tree", {
 								if(val!=null){
 									
 									var path ="";
+									var fullpath ="";
 									if(parent!=null){
 										if(parent.path!=null){
 											path=parent.path+"/"+key;
 										}else{
 											path="/"+key;
 										}
+										fullpath = parent.fullpath+"/"+key
 									}
 
 									if(val.role=="object"){
-										var pt = parent.kids.push({"name":key,"path":path,"kids":[]});
+										var pt = parent.kids.push({"name":key,"fullpath":fullpath,"path":path,"kids":[]});
 										p = parent.kids[pt-1];
 
 									}else{
 										if(val.role!=null){
-											parent.kids.push({"name":key,"obj":val,"path":path,"method":method,"trace":trace});
+											parent.kids.push({"name":key,"obj":val,"fullpath":fullpath,"path":path,"method":method,"trace":trace});
 										}
 									}
 								}

@@ -143,7 +143,7 @@ qx.Class.define("ae.plotly.Application", {
 	        splitpane.add(this.getChartView(), 2);
 	        
 	        var stack = this._stack = new qx.ui.container.Stack();
-	        stack.__treeView = new qx.ui.container.Composite();//new ae.plotly.ui.editor.Tree(qxchart);
+	        stack.__treeView = new ae.plotly.ui.editor.Tree(qxchart);
 	        stack.__jsonView = new ae.plotly.ui.editor.Json(qxchart);
 	        stack.__consoleView = new ae.plotly.ui.editor.Code(qxchart);
 
