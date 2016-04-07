@@ -1,5 +1,5 @@
 {
-  "name"    : "qxplotly",
+  "name"    : "qooxly",
 
   "include" :
   [
@@ -40,9 +40,9 @@
 
   "let" :
   {
-    "APPLICATION"  : "ae.plotly",
+    "APPLICATION"  : "ae.qooxly",
     "QOOXDOO_PATH" : "../../DEV/Workspace/qooxdoo/webcontent",
-    "QXTHEME"      : "ae.plotly.theme.Theme",
+    "QXTHEME"      : "ae.qooxly.theme.Theme",
     "API_EXCLUDE"  : ["qx.test.*", "qx.*","${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
     "LOCALES"      : [ "en" ],
     "CACHE"        : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",
@@ -75,7 +75,7 @@
 	         //Use for Script Editor
 	         {"uri": "resource/plotly/plotly.js"},
 	         {"uri": "resource/ace/ace.js"},
-	         {"uri": "resource/ae/plotly/saveas.js"}
+	         {"uri": "resource/ae/qooxly/saveas.js"}
 	       ]
 	   },
       "source": {

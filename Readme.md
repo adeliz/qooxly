@@ -1,12 +1,12 @@
-# qxPlotly
+# qooxly
 
-qxPlotly is a [Qooxdoo](http://qooxdoo.org/) wrapper for [Plotly](https://plot.ly/javascript/)
+qooxly is a [Qooxdoo](http://qooxdoo.org/) wrapper for [Plotly](https://plot.ly/javascript/)
 
-![qxPlotly](screenshot.png)
+![qooxly](screenshot.png)
 
 ## 1. Add the qxPlolty contrib to your project
 
-* Download qxPlotly
+* Download qooxly
 * Paste it in your project (e.g. within the top-level directory `contribs`)
 * Add the following in your config.json file
 
@@ -14,7 +14,7 @@ qxPlotly is a [Qooxdoo](http://qooxdoo.org/) wrapper for [Plotly](https://plot.l
 "jobs" : {
   "libraries" : {
     "library" : [{
-      "manifest": "contribs/qxplotly/Manifest.json"
+      "manifest": "contribs/qooxly/Manifest.json"
       }
     ]
   }
@@ -25,7 +25,7 @@ qxPlotly is a [Qooxdoo](http://qooxdoo.org/) wrapper for [Plotly](https://plot.l
 More infos at http://manual.qooxdoo.org/devel/pages/development/contrib.html
 
 
-## 2. Start using qxPlotly
+## 2. Start using qooxly
 
 Create a new chart:
 
