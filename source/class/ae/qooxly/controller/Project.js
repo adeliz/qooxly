@@ -22,10 +22,14 @@ qx.Class.define("ae.qooxly.controller.Project",{
             
             commands.newplot = new qx.ui.command.Command("Control+N");
             commands.newplot.addListener("execute", function(){
-            	qx.core.Init.getApplication().getChartView().plot([],{});
+
+            	var model = qx.core.Init.getApplication().getChartModel();
+            	
+            	model.setLayout(new ae.chart.model.layout.Layout());
+            	model.removeAllTraces();
             }, this);
             
-            commands.open = new qx.ui.command.Command("Control+O");
+            commands.open = new qx.ui.command.Command("Control+O").set({enabled:false});
             commands.open.addListener("execute", function(){
             	this.openPlot();
             }, this);
@@ -36,7 +40,8 @@ qx.Class.define("ae.qooxly.controller.Project",{
             }, this);
             
             commands.saveas = new qx.ui.command.Command("Control+S").set({
-				icon : "ae/qooxly/icons/saveas.png"
+				icon : "ae/qooxly/icons/saveas.png",
+				enabled:false
 			});
             commands.saveas.addListener("execute", function(){
             	this.savePlotAs();
@@ -44,20 +49,16 @@ qx.Class.define("ae.qooxly.controller.Project",{
             
             commands.addTrace = new qx.ui.command.Command();
             commands.addTrace.addListener("execute", function(){
-            	var qxchart = qx.core.Init.getApplication().getChartView();
-            	qxchart.addTraces({x:[],y:[]});
-            	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
+            	var model = qx.core.Init.getApplication().getChartModel();
+            	model.addTrace(new ae.chart.model.trace.Scatter());
             }, this);
             
             commands.removeTrace = new qx.ui.command.Command();
             commands.removeTrace.addListener("execute", function(){
-            	var qxchart = qx.core.Init.getApplication().getChartView();
-            	var trace = qx.core.Init.getApplication()._stack.__treeView.treeController.getSelection().getItem(0);
+            	var model = qx.core.Init.getApplication().getChartModel();
+            	var trace = qx.core.Init.getApplication()._tracesEditor._controller.getSelection().getItem(0);
             	if(trace!=null){
-            		if(trace.getName().substring(0,5)=="trace"){
-            			qxchart.deleteTraces(parseInt(trace.getName().split(" ")[1]));
-            			qxchart.fireDataEvent("changeSchema");
-            		}
+            		model.removeTrace(trace);
             	}
             	
             }, this);
@@ -285,29 +286,6 @@ qx.Class.define("ae.qooxly.controller.Project",{
             	} 
             	
             	this.loadFromJson(obj);
-            	//var cp = encodeURIComponent(JSON.stringify(obj));
-            	//var cp = JSON.stringify(obj);
-        		
-        		
-        		/*for(var i=0;i<obj.data.length;i++){
-            		
-            		var src = obj.data[i].source;
-            		if(src){
-            			switch(src.format){
-            			case "SAGD":
-            				var url="http://cmhm-sig/api/v1/query?";
-            				//var url=src1.url;
-            				for(key in src.parameters){
-            					url=url+key+"="+src.parameters[key]+"&";
-            				}
-            				console.log(url);
-            				this.loadData(i,url);                    				
-            				break;
-            			}
-            			console.log(src.format);
-            		}
-            	}*/
-
                 
             },this);
             req.send();
@@ -388,7 +366,7 @@ qx.Class.define("ae.qooxly.controller.Project",{
             var container  = new qx.ui.container.Composite(layout).set({
                 margin:5
             }); */
-            var html = new qx.ui.embed.Html("<b>Plotly Editor</b><br>Charting Application<br>Version "+qx.core.Environment.version+"<br><a target='_blank' href='https://github.com/adeliz/qooxly'>https://github.com/adeliz/qooxly</a>");
+            var html = new qx.ui.embed.Html("<b>Qooxly</b><br>Chart editor<br>Version "+qx.core.Environment.version+"<br><a target='_blank' href='https://github.com/adeliz/qooxly'>https://github.com/adeliz/qooxly</a>");
             //container.add(html);
             this.win.add(html,{flex:1});
             this.win.show();

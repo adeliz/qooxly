@@ -11,9 +11,9 @@ qx.Class.define("ae.qooxly.ui.Menu",
             //File - New/Open.../Open from URL.../Save as.../Print
             var menufile = new qx.ui.menu.Menu();
             var newButton = new qx.ui.menu.Button(this.tr("New"), null, qx.core.Init.getApplication().projectController.getCommand("newplot"));
-            var openButton = new qx.ui.menu.Button(this.tr("Open..."), null, qx.core.Init.getApplication().projectController.getCommand("open"));
-            var openurlButton = new qx.ui.menu.Button(this.tr("Open from URL..."), null, qx.core.Init.getApplication().projectController.getCommand("openurl"));
-            var saveasButton = new qx.ui.menu.Button(this.tr("Save as..."), null, qx.core.Init.getApplication().projectController.getCommand("saveas"));
+            var openButton = new qx.ui.menu.Button(this.tr("Open..."), null, qx.core.Init.getApplication().projectController.getCommand("open")).set({enabled:false});
+            var openurlButton = new qx.ui.menu.Button(this.tr("Open from URL..."), null, qx.core.Init.getApplication().projectController.getCommand("openurl")).set({enabled:false});
+            var saveasButton = new qx.ui.menu.Button(this.tr("Save as..."), null, qx.core.Init.getApplication().projectController.getCommand("saveas")).set({enabled:false});
             var printButton = new qx.ui.menu.Button(this.tr("Print"), null, qx.core.Init.getApplication().projectController.getCommand("print"));
             menufile.add(newButton);
             menufile.addSeparator();
@@ -47,7 +47,7 @@ qx.Class.define("ae.qooxly.ui.Menu",
             menuaxes.add(removeAxisButton);
             
             var axesMenu = new qx.ui.menubar.Button(this.tr("Axes"), null, menuaxes);
-            this.add(axesMenu);
+            //this.add(axesMenu);
             
             //Notes
             var menunotes = new qx.ui.menu.Menu();
@@ -57,7 +57,7 @@ qx.Class.define("ae.qooxly.ui.Menu",
             menunotes.add(removeNoteButton);
             
             var notesMenu = new qx.ui.menubar.Button(this.tr("Annotations"), null, menunotes);
-            this.add(notesMenu);
+            //this.add(notesMenu);
             
             //Shapes
             

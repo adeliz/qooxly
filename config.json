@@ -41,7 +41,7 @@
   "let" :
   {
     "APPLICATION"  : "ae.qooxly",
-    "QOOXDOO_PATH" : "../../DEV/Workspace/qooxdoo/webcontent",
+    "QOOXDOO_PATH" : "D:/qooxdoo",
     "QXTHEME"      : "ae.qooxly.theme.Theme",
     "API_EXCLUDE"  : ["qx.test.*", "qx.*","${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
     "LOCALES"      : [ "en" ],
@@ -58,17 +58,18 @@
     // project; make sure to adapt the path to the Manifest.json; if you are
     // using a contrib: library, it will be downloaded into the path specified
     // by the 'cache/downloads' config key
-    /*
+
     "libraries" :
     {
       "library" :
       [
         {
-          "manifest" : "contrib://SkeletonApplication/trunk/Manifest.json"
+          //"manifest" : "contrib://SkeletonApplication/trunk/Manifest.json"
+          "manifest" : "D:/DEV/ws_neon/qxchart/Manifest.json"
         }
       ]
-    }
-    */
+    },
+
 
 	  "core" : {
 	       "add-script" : [

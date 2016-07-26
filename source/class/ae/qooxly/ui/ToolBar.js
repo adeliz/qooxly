@@ -17,8 +17,7 @@ qx.Class.define("ae.qooxly.ui.ToolBar",{
         newProjectButton.setCommand(projectController.getCommand("newplot"));
         var openProjectButton = new qx.ui.toolbar.Button(this.tr("Open project"),"ae/qooxly/icons/folder.png").set({
             show:"icon",
-            toolTipText:"Open project",
-            enabled:true
+            toolTipText:"Open project"
         });
         openProjectButton.setCommand(projectController.getCommand("open"));
         var saveProjectButton = new qx.ui.toolbar.Button();
@@ -31,7 +30,7 @@ qx.Class.define("ae.qooxly.ui.ToolBar",{
         projectpart.add(saveProjectButton);
         
         //drag mode part
-        var dragmodePart = new qx.ui.toolbar.Part();
+        var dragmodePart = new qx.ui.toolbar.Part().set({enabled:false});
         this.add(dragmodePart);
         
         var panButton = new qx.ui.toolbar.RadioButton(this.tr("Pan"),"ae/qooxly/icons/move.png").set({
@@ -81,7 +80,7 @@ qx.Class.define("ae.qooxly.ui.ToolBar",{
         dragmodePart.add(lassoBoxButton);
         
         //Hover mode part
-        var hovermodePart = new qx.ui.toolbar.Part();
+        var hovermodePart = new qx.ui.toolbar.Part().set({enabled:false});
         this.add(hovermodePart);
         
         var xButton = new qx.ui.toolbar.RadioButton(this.tr("X"),"ae/qooxly/icons/xlabel.png").set({
@@ -133,78 +132,12 @@ qx.Class.define("ae.qooxly.ui.ToolBar",{
         var viewPart = new qx.ui.toolbar.Part();
         this.add(viewPart);
         
-		var treeView = new qx.ui.toolbar.RadioButton("Tree Editor","ae/qooxly/icons/tree.png").set({
-            //show:"icon",
-            toolTipText:this.tr("Tree editor")
-        });
-		treeView.setModel('tree');
-		var jsonView = new qx.ui.toolbar.RadioButton("JSON Editor","ae/qooxly/icons/json.png").set({
-            //show:"icon",
-            toolTipText:this.tr("Json editor")
-        });
-		jsonView.setModel('json');
 		
-		treeView.setUserData("value", "tree");
-		jsonView.setUserData("value", "json");
-		
-		viewPart.add(treeView);
-		viewPart.add(jsonView);
-
-        var consoleView = new qx.ui.toolbar.RadioButton("Code Editor","ae/qooxly/icons/code.png").set({
-            //show:"icon",
-            toolTipText:this.tr("Code Editor")
-        });
-
-        consoleView.setUserData("value", "console");
-        consoleView.setModel('console');
-
-        viewPart.add(consoleView);
-
-        var viewGroup = this.__viewGroup = new qx.ui.form.RadioGroup;
-        viewGroup.setAllowEmptySelection(true);
-        viewGroup.add(treeView,jsonView,consoleView);
-        
-        viewGroup.addListener('changeSelection',this.__syncRightView,this);
         
     },
     
     members : {
-		
-		/**
-	     * TODOC
-	     *
-	     */
-	    __syncRightView :  function(e)
-	    {
-	      //var theOtherGroup = e.getTarget()===this.__viewGroup ? this.__menuViewRadioGroup : this.__viewGroup;
-	      var selected = e.getData()[0];
-	      /*if(theOtherGroup && selected) {
-	        theOtherGroup.setModelSelection([selected.getModel()]);
-	      }*/
-	      var stack = qx.core.Init.getApplication()._stack;
-	      var show = selected != null ? selected.getUserData("value") : "";
-	      switch(show)
-	      {
-	        case "tree":
-	        	stack.setSelection([qx.core.Init.getApplication()._stack.__treeView]);
-	        	stack.show();
-	        	break;
 
-	        case "json":
-	        	stack.setSelection([qx.core.Init.getApplication()._stack.__jsonView]);
-	        	stack.show();
-	        	break;
-
-	        case "console":
-	        	stack.setSelection([qx.core.Init.getApplication()._stack.__consoleView]);
-	        	stack.show();
-	        	break;
-
-	        default:
-	        	stack.resetSelection();
-	        	stack.exclude();
-	      }
-	    }
     }
     
     

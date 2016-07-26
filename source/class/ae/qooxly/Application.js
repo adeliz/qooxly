@@ -35,6 +35,12 @@ qx.Class.define("ae.qooxly.Application", {
 	       */
 	      menu : {
 	          init : null
+	      },
+	      /**
+	       * Model
+	       */
+	      chartModel : {
+	          init : null
 	      }
 	  },
 	  
@@ -75,6 +81,8 @@ qx.Class.define("ae.qooxly.Application", {
 	        //---------------------------Model-----------------------------------
 	        var projectController = this.projectController = new ae.qooxly.controller.Project();
 
+	        var model = new ae.chart.model.Chart();
+			this.setChartModel(model);
 	        /*var model = new ae.map.model.Map();
 	        this.setModelMap(model);
 
@@ -135,61 +143,76 @@ qx.Class.define("ae.qooxly.Application", {
 	        var splitpane = new qx.ui.splitpane.Pane("horizontal").set({margin:5});
 	        splitpane.getChildControl("splitter").setBackgroundColor("white");
 	        
-	        var qxchart = new ae.qooxly.ui.Chart();
+	        var chartLayout = new ae.chart.model.layout.Layout().set({
+	        	title:"My chart"
+	        });
+	        model.setLayout(chartLayout);
+	        var scatter = new ae.chart.model.trace.Scatter();
+	        scatter.setX([1, 2, 3, 4]);
+	        scatter.setY([10, 15, 13, 17]);
+	        scatter.setMode("markers");
+	        //scatter.setName("Temperature");
+	        model.addTrace(scatter);
+	        var scatter2 = new ae.chart.model.trace.Scatter();
+	        scatter2.setX([1, 2, 3, 4]);
+	        scatter2.setY([8, 12, 18, 12]);
+	        scatter2.setMode("lines");
+	        scatter2.setName("Humidity");
+	        model.addTrace(scatter2);
+	        var scatter3 = new ae.chart.model.trace.Scatter();
+	        scatter3.setX([1, 2, 3, 4]);
+	        scatter3.setY([18, 14, 7, 9]);
+	        scatter3.setMode("lines");
+	        scatter3.setConnectgaps(true);
+	        scatter3.setOpacity(0.2);
+	        scatter3.setVisible(false);
+	        model.addTrace(scatter3);
+	        var qxchart = new ae.chart.ui.Chart(model).set({
+	        	decorator : "main"
+	        });
 	        
 	        window.Qooxly=qxchart;
 	        this.setChartView(qxchart);
 
 	        splitpane.add(this.getChartView(), 2);
-	        
-	        var stack = this._stack = new qx.ui.container.Stack();
-	        stack.__treeView = new ae.qooxly.ui.editor.Tree(qxchart);
-	        stack.__jsonView = new ae.qooxly.ui.editor.Json(qxchart);
-	        stack.__consoleView = new ae.qooxly.ui.editor.Code(qxchart);
 
-		    //stack.setDecorator("main");
-			stack.add(stack.__treeView );
-			stack.add(stack.__jsonView);
-			stack.add(stack.__consoleView);
-			stack.resetSelection();
-			stack.exclude();
+	        var tabView = new qx.ui.tabview.TabView();
+	        
+	        var page1 = new qx.ui.tabview.Page("Traces");
+	        page1.setLayout(new qx.ui.layout.VBox());
+	        var splitpane2 = new qx.ui.splitpane.Pane("vertical").set({margin:5});
+	        splitpane2.getChildControl("splitter").setBackgroundColor("white");
+	        this._tracesEditor = new ae.qooxly.ui.Traces();
+	        splitpane2.add(this._tracesEditor,0);
+	        
+	        var tabView2 = new qx.ui.tabview.TabView();
+	        var page21 = new qx.ui.tabview.Page("Data");
+	        page21.setLayout(new qx.ui.layout.VBox());
+	        page21.add(new ae.qooxly.ui.form.Data(),{flex:1});
+	        tabView2.add(page21);
+	        
+	        var page22 = new qx.ui.tabview.Page("Properties");
+	        page22.setLayout(new qx.ui.layout.VBox());
+	        page22.add(new ae.qooxly.ui.form.Scatter(),{flex:1});
+	        tabView2.add(page22);
+	        
+	        splitpane2.add(tabView2,1);
+	        page1.add(splitpane2,{flex:1});
+	        tabView.add(page1);
+	        
+	        var page2 = new qx.ui.tabview.Page("Layout");
+	        page2.setLayout(new qx.ui.layout.VBox());
+	        page2.add(new qx.ui.basic.Label("Notes..."));
+	        tabView.add(page2);
+	        
 			
-			splitpane.add(stack, 0);
+			splitpane.add(tabView, 0);
 			
 	        workbench.add(splitpane, {flex : 1});
 
 	        root.add(workbench, {
 	            edge : 0
 	        });
-            
-			var trace1 = {
-				x : [ 1, 2, 3, 4 ],
-				y : [ 10, 15, 13, 17 ],
-				mode : 'markers',
-				type : 'scatter'
-			};
-
-			var trace2 = {
-				x : [ 2, 3, 4, 5 ],
-				y : [ 16, 5, 11, 9 ],
-				mode : 'lines',
-				type : 'scatter'
-			};
-
-			var trace3 = {
-				x : [ 1, 2, 3, 4 ],
-				y : [ 12, 9, 15, 12 ],
-				mode : 'lines+markers',
-				type : 'scatter'
-			};
-
-			var data = [ trace1, trace2 ];
-			var layout={title:'Test'};
-			
-			qx.ui.core.queue.Manager.flush();
-			
-			//qxchart.plot(data,layout);
-			qxchart.plot([],{});			
 	        
 	        //Check query parameters
 	        var query = window.location.search.substring(1);
