@@ -41,7 +41,7 @@ qx.Class.define("ae.qooxly.controller.Project",{
             
             commands.saveas = new qx.ui.command.Command("Control+S").set({
 				icon : "ae/qooxly/icons/saveas.png",
-				enabled:false
+				enabled:true
 			});
             commands.saveas.addListener("execute", function(){
             	this.savePlotAs();
@@ -65,45 +65,19 @@ qx.Class.define("ae.qooxly.controller.Project",{
             
             commands.addYAxis = new qx.ui.command.Command();
             commands.addYAxis.addListener("execute", function(){
-            	var yaxis=0;
-            	var layout = qx.core.Init.getApplication().getChartView().getLayout();
-            	for (var key in layout) {
-					if(key.substring(0,5)=="yaxis"){
-						yaxis = yaxis+1;
-					}
-				}
-				//Add basic yAxis if needed
-				if(yaxis==0){
-					yaxis = yaxis+1;
-				}
-				var obj = {};
-				obj["yaxis"+(yaxis+1)]={"anchor":"x","overlaying":"y"};
-            	qx.core.Init.getApplication().getChartView().relayout(obj);
-            	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
+            	var model = qx.core.Init.getApplication().getChartModel();
+            	model.getLayout().getYaxes().push(new ae.chart.model.axis.Axis());
             }, this);
             
             commands.addXAxis = new qx.ui.command.Command();
             commands.addXAxis.addListener("execute", function(){
-            	var xaxis=0;
-            	var layout = qx.core.Init.getApplication().getChartView().getLayout();
-            	for (var key in layout) {
-					if(key.substring(0,5)=="xaxis"){
-						xaxis = xaxis+1;
-					}
-				}
-				//Add basic xAxis if needed
-				if(xaxis==0){
-					xaxis = xaxis+1;
-				}
-				var obj = {};
-				obj["xaxis"+(xaxis+1)]={"anchor":"y","overlaying":"x"};
-            	qx.core.Init.getApplication().getChartView().relayout(obj);
-            	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
+            	var model = qx.core.Init.getApplication().getChartModel();
+            	model.getLayout().getXaxes().push(new ae.chart.model.axis.Axis());
             }, this);
             
             commands.removeAxis = new qx.ui.command.Command();
             commands.removeAxis.addListener("execute", function(){
-            	var axis = qx.core.Init.getApplication()._stack.__treeView.treeController.getSelection().getItem(0);
+            	/*var axis = qx.core.Init.getApplication()._stack.__treeView.treeController.getSelection().getItem(0);
             	if(axis!=null){
             		if(axis.getName().substring(0,5)=="xaxis" || axis.getName().substring(0,5)=="yaxis" ){
                     	var obj = {};
@@ -112,7 +86,7 @@ qx.Class.define("ae.qooxly.controller.Project",{
                     	qx.core.Init.getApplication().getChartView().relayout(obj);
                     	qx.core.Init.getApplication().getChartView().fireDataEvent("changeSchema");
             		}
-            	}
+            	}*/
             	
             }, this);
             
@@ -292,6 +266,12 @@ qx.Class.define("ae.qooxly.controller.Project",{
         },
         
         savePlotAs : function(){
+        	
+        	//@todo REMOVE
+        	/*var model = qx.core.Init.getApplication().getChartModel();
+        	console.log(model.toJson());
+        	return;*/
+        	
         	var win = this.win = new qx.ui.window.Window(this
 					.tr("Save chart as...")).set({
 				width : 300,

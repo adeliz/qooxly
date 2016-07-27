@@ -146,6 +146,8 @@ qx.Class.define("ae.qooxly.Application", {
 	        var chartLayout = new ae.chart.model.layout.Layout().set({
 	        	title:"My chart"
 	        });
+	        //var font = new ae.chart.model.Font(null,"Arial","#FF0FF0");
+	        //chartLayout.setFont(font);
 	        model.setLayout(chartLayout);
 	        var scatter = new ae.chart.model.trace.Scatter();
 	        scatter.setX([1, 2, 3, 4]);
@@ -156,10 +158,11 @@ qx.Class.define("ae.qooxly.Application", {
 	        var scatter2 = new ae.chart.model.trace.Scatter();
 	        scatter2.setX([1, 2, 3, 4]);
 	        scatter2.setY([8, 12, 18, 12]);
+	        scatter2.setText(["valA", "valB", "", "valD"]);
 	        scatter2.setMode("lines");
 	        scatter2.setName("Humidity");
-	        var font = new ae.chart.model.Font(36,"Arial","#FF0FF0");
-	        scatter2.setTextfont(font);
+	        //var font = new ae.chart.model.Font(36,"Arial","#FF0FF0");
+	        //scatter2.setTextfont(font);
 	        model.addTrace(scatter2);
 	        var scatter3 = new ae.chart.model.trace.Scatter();
 	        scatter3.setX([1, 2, 3, 4]);
@@ -205,8 +208,14 @@ qx.Class.define("ae.qooxly.Application", {
 	        
 	        var page2 = new qx.ui.tabview.Page("Layout");
 	        page2.setLayout(new qx.ui.layout.VBox());
-	        page2.add(new qx.ui.basic.Label("Notes..."));
+	        page2.add(new ae.qooxly.ui.form.Layout(),{flex:1});
 	        tabView.add(page2);
+	        
+	        var page3 = new qx.ui.tabview.Page("Axes");
+	        page3.setLayout(new qx.ui.layout.VBox());
+	        this._axesEditor = new ae.qooxly.ui.Axes();
+	        page3.add(this._axesEditor,{flex:1});
+	        tabView.add(page3);
 	        
 			
 			splitpane.add(tabView, 0);

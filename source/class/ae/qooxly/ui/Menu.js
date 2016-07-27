@@ -47,7 +47,7 @@ qx.Class.define("ae.qooxly.ui.Menu",
             menuaxes.add(removeAxisButton);
             
             var axesMenu = new qx.ui.menubar.Button(this.tr("Axes"), null, menuaxes);
-            //this.add(axesMenu);
+            this.add(axesMenu);
             
             //Notes
             var menunotes = new qx.ui.menu.Menu();

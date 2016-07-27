@@ -35,7 +35,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
           {label: this.tr("Markers and Text"), data: "markers+text"},
           {label: this.tr("Lines and Text"), data: "lines+text"},
           {label: this.tr("Markers and Lines"), data: "markers+lines"},
-          {label: this.tr("Markers, Lines and Text"), data: "markers+lines+text"},
+          {label: this.tr("Markers, Lines and Text"), data: "markers+lines+text"}
         ];
         var smodel = qx.data.marshal.Json.createModel(modes);
         var ssController = new qx.data.controller.List(null, modeSelectBox);
@@ -66,7 +66,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 	    
 		var nameTf = new qx.ui.form.TextField();
 		
-		var colortextTf = new qx.ui.form.ColorField();
+		var colortextTf = new ae.qooxly.ui.ColorField();
 		var familytextTf = new qx.ui.form.TextField();
 		var sizetextTf = new qx.ui.form.Spinner();
 		
@@ -77,15 +77,13 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 			//value: 0,
 			//maxHeight:20
         });
-
-		var fontWidget = new ae.qooxly.ui.FontWidget();
 		
 		this.ptfcontroller = new qx.data.controller.Form(null, form);
 		
-		var clazz = qx.Class.getByName("ae.chart.model.trace.Scatter"); 
+		/*var clazz = qx.Class.getByName("ae.chart.model.trace.Scatter"); 
 		var props = qx.Class.getProperties(clazz); 
 		var props = qx.util.PropertyUtil.getAllProperties(clazz);
-		console.log(props);
+		console.log(props);*/
 		
     	
 		/*var exclude = ["type","dx","dy","r","t","x0","y0","x","y","line","marker"];
@@ -142,6 +140,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 			
 		}*/
 		
+		form.addGroupHeader("General");
 		form.add(nameTf, this.tr("Name"),null,"name");
 		this.ptfcontroller.addBindingOptions("name", {
 			converter : function(value) {
@@ -184,6 +183,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		form.add(showlegendCheckBox,this.tr("Show legend"),null,"showlegend");
 		form.add(visibleCheckBox,this.tr("Visible"),null,"visible");
 		
+		form.addGroupHeader("Font");
 		form.add(familytextTf,this.tr("Font family"),null,"textfont.family");
 		form.add(sizetextTf,this.tr("Font size"),null,"textfont.size");
 		form.add(colortextTf,this.tr("Font color"),null,"textfont.color");
@@ -198,6 +198,15 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		
 		//binding
     	this.controller = qx.core.Init.getApplication()._tracesEditor._controller;
-    	this.controller.bind("selection[0]", this.ptfcontroller, "model");
+    	this.controller.bind("selection[0]", this.ptfcontroller, "model",{
+    		converter : function(value){
+    			if(value!=null && value.getTextfont()==null){
+    				value.setTextfont(new ae.chart.model.Font());
+    				return value;
+    			}else{
+    				return value;
+    			}
+    		}
+    	});
 	}
 })
