@@ -62,6 +62,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 	        controller.bindProperty("data", "model", null, item, index);
 	    }});
 	    fController.setModel(fmodel);		      
+	    var fillcolorField = new ae.qooxly.ui.ColorField();
 	    
 		var nameTf = new qx.ui.form.TextField();
 		
@@ -161,6 +162,18 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		});
 		
 		form.add(fillSelectBox, this.tr("Fill"),null,"fill");
+		form.add(fillcolorField, this.tr("Fill color"),null,"fillcolor");
+		this.ptfcontroller.addBindingOptions("fillcolor", {
+			converter : function(value) {
+				return (value) ? value : "";
+			}
+		},
+		{
+			converter : function(value) {
+				if (value!="") {return value};
+			}
+		});
+		
 		form.add(connectgapsCheckBox,this.tr("Connect gaps"),null,"connectgaps");
 		form.add(showlegendCheckBox,this.tr("Show legend"),null,"showlegend");
 		form.add(visibleCheckBox,this.tr("Visible"),null,"visible");

@@ -6,7 +6,13 @@ qx.Class.define("ae.qooxly.ui.ColorField", {
 
 	construct : function (){
 		this.base(arguments);
-		this.bind("value", this, "backgroundColor");
+		this.bind("value", this, "backgroundColor",{
+			converter : function(value){
+				if(value!=""){
+					return value;
+				}
+			}
+		});
 		
 		var popup = this.popup = new qx.ui.control.ColorPopup();
 		popup.addListener("changeValue", function(e) {
