@@ -158,6 +158,8 @@ qx.Class.define("ae.qooxly.Application", {
 	        scatter2.setY([8, 12, 18, 12]);
 	        scatter2.setMode("lines");
 	        scatter2.setName("Humidity");
+	        var font = new ae.chart.model.Font(36,"Arial","#FF0FF0");
+	        scatter2.setTextfont(font);
 	        model.addTrace(scatter2);
 	        var scatter3 = new ae.chart.model.trace.Scatter();
 	        scatter3.setX([1, 2, 3, 4]);
@@ -166,6 +168,7 @@ qx.Class.define("ae.qooxly.Application", {
 	        scatter3.setConnectgaps(true);
 	        scatter3.setOpacity(0.2);
 	        scatter3.setVisible(false);
+	        
 	        model.addTrace(scatter3);
 	        var qxchart = new ae.chart.ui.Chart(model).set({
 	        	decorator : "main"

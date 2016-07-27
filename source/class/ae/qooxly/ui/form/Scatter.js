@@ -66,6 +66,10 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 	    
 		var nameTf = new qx.ui.form.TextField();
 		
+		var colortextTf = new qx.ui.form.ColorField();
+		var familytextTf = new qx.ui.form.TextField();
+		var sizetextTf = new qx.ui.form.Spinner();
+		
 		var sOpacity = this.sOpacity = new qx.ui.form.Slider().set({
 			minimum: 0,
 			maximum: 100,
@@ -74,6 +78,8 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 			//maxHeight:20
         });
 
+		var fontWidget = new ae.qooxly.ui.FontWidget();
+		
 		this.ptfcontroller = new qx.data.controller.Form(null, form);
 		
 		var clazz = qx.Class.getByName("ae.chart.model.trace.Scatter"); 
@@ -178,11 +184,16 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		form.add(showlegendCheckBox,this.tr("Show legend"),null,"showlegend");
 		form.add(visibleCheckBox,this.tr("Visible"),null,"visible");
 		
+		form.add(familytextTf,this.tr("Font family"),null,"textfont.family");
+		form.add(sizetextTf,this.tr("Font size"),null,"textfont.size");
+		form.add(colortextTf,this.tr("Font color"),null,"textfont.color");
+		
 		var renderedForm = new qx.ui.form.renderer.Single(form);
 		renderedForm.getLayout().setColumnFlex(0,0);
 		renderedForm.getLayout().setColumnFlex(1,1);
 		
 		container.add(renderedForm,{flex:1});
+
 		this.add(scroll,{flex:1});
 		
 		//binding
