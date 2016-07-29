@@ -23,6 +23,8 @@ qx.Class.define("ae.qooxly.ui.form.Axis", {
 
 		var title = new qx.ui.form.TextField();
 		var color = new ae.qooxly.ui.ColorField();
+		var overlaying = new qx.ui.form.TextField();
+		var side = new qx.ui.form.TextField();
 		
 		var showline = new qx.ui.form.CheckBox();
 		var linewidth = new qx.ui.form.Spinner();
@@ -37,6 +39,8 @@ qx.Class.define("ae.qooxly.ui.form.Axis", {
 		form.addGroupHeader("General");
 		form.add(title,this.tr("Title"),null,"title");
 		form.add(color,this.tr("Color"),null,"color");
+		form.add(side,this.tr("Side"),null,"side");
+		form.add(overlaying,this.tr("Overlaying"),null,"overlaying");
 		
 		form.addGroupHeader("Line");
 		form.add(showline,this.tr("Show line"),null,"showline");

@@ -23,10 +23,21 @@ qx.Class.define("ae.qooxly.controller.Project",{
             commands.newplot = new qx.ui.command.Command("Control+N");
             commands.newplot.addListener("execute", function(){
 
-            	var model = qx.core.Init.getApplication().getChartModel();
+            	var chart = qx.core.Init.getApplication().getChartView();
+            	var model = new ae.chart.model.Chart();
+            	/*var layout = new ae.chart.model.layout.Layout().set({
+            		autosize:true
+            	});
             	
-            	model.setLayout(new ae.chart.model.layout.Layout());
-            	model.removeAllTraces();
+            	model.setLayout(layout);*/
+            	
+            	var scatter = new ae.chart.model.trace.Scatter();
+            	model.addTrace(scatter);
+            	console.log(model.toJson());
+            	chart.setModel(model);
+            	//layout.setAutosize(true);
+            	//model.setLayout(new ae.chart.model.layout.Layout());
+            	//model.removeAllTraces();
             }, this);
             
             commands.open = new qx.ui.command.Command("Control+O").set({enabled:false});
@@ -49,13 +60,13 @@ qx.Class.define("ae.qooxly.controller.Project",{
             
             commands.addTrace = new qx.ui.command.Command();
             commands.addTrace.addListener("execute", function(){
-            	var model = qx.core.Init.getApplication().getChartModel();
+            	var model = qx.core.Init.getApplication().getChartView().getModel();
             	model.addTrace(new ae.chart.model.trace.Scatter());
             }, this);
             
             commands.removeTrace = new qx.ui.command.Command();
             commands.removeTrace.addListener("execute", function(){
-            	var model = qx.core.Init.getApplication().getChartModel();
+            	var model = qx.core.Init.getApplication().getChartView().getModel();
             	var trace = qx.core.Init.getApplication()._tracesEditor._controller.getSelection().getItem(0);
             	if(trace!=null){
             		model.removeTrace(trace);
@@ -65,13 +76,18 @@ qx.Class.define("ae.qooxly.controller.Project",{
             
             commands.addYAxis = new qx.ui.command.Command();
             commands.addYAxis.addListener("execute", function(){
-            	var model = qx.core.Init.getApplication().getChartModel();
-            	model.getLayout().getYaxes().push(new ae.chart.model.axis.Axis());
+            	var model = qx.core.Init.getApplication().getChartView().getModel();
+            	if(model.getLayout().getYaxes().length==0){
+            		model.getLayout().getYaxes().push(new ae.chart.model.axis.Axis());
+            	}else{
+            		model.getLayout().getYaxes().push(new ae.chart.model.axis.Axis().set({overlaying:'y'}));
+            	}
+            	
             }, this);
             
             commands.addXAxis = new qx.ui.command.Command();
             commands.addXAxis.addListener("execute", function(){
-            	var model = qx.core.Init.getApplication().getChartModel();
+            	var model = qx.core.Init.getApplication().getChartView().getModel();
             	model.getLayout().getXaxes().push(new ae.chart.model.axis.Axis());
             }, this);
             

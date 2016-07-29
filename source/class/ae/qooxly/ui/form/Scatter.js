@@ -78,6 +78,9 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 			//maxHeight:20
         });
 		
+		var xaxis = new qx.ui.form.TextField();
+		var yaxis = new qx.ui.form.TextField();
+		
 		this.ptfcontroller = new qx.data.controller.Form(null, form);
 		
 		/*var clazz = qx.Class.getByName("ae.chart.model.trace.Scatter"); 
@@ -182,6 +185,8 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		form.add(connectgapsCheckBox,this.tr("Connect gaps"),null,"connectgaps");
 		form.add(showlegendCheckBox,this.tr("Show legend"),null,"showlegend");
 		form.add(visibleCheckBox,this.tr("Visible"),null,"visible");
+		form.add(xaxis,this.tr("X axis"),null,"xaxis");
+		form.add(yaxis,this.tr("Y axis"),null,"yaxis");
 		
 		form.addGroupHeader("Font");
 		form.add(familytextTf,this.tr("Font family"),null,"textfont.family");

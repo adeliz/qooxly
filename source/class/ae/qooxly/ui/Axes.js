@@ -12,22 +12,43 @@ qx.Class.define("ae.qooxly.ui.Axes", {
 		var radioButtonGroupHBox = new qx.ui.form.RadioButtonGroup();
 	    radioButtonGroupHBox.setLayout(new qx.ui.layout.HBox(5));
 	    radioButtonGroupHBox.setDecorator(null);
+	    var yradio = new qx.ui.form.RadioButton("Y axes");
 	    radioButtonGroupHBox.add(new qx.ui.form.RadioButton("X axes"));
-	    radioButtonGroupHBox.add(new qx.ui.form.RadioButton("Y axes"));
-	    
-	    
+	    radioButtonGroupHBox.add(yradio);
+	    radioButtonGroupHBox.setSelection([yradio]);
 	    
 		this.list = new qx.ui.form.List().set({
 			decorator : "main"
 		});
 
-		var axes = qx.core.Init.getApplication().getChartModel().getLayout().getYaxes();
-		this._controller = new qx.data.controller.List(axes, this.list);
+		var yaxes = qx.core.Init.getApplication().getChartModel().getLayout().getYaxes();
+		if(yaxes.length==0){yaxes.push(new ae.chart.model.axis.Axis());}
+		var xaxes = qx.core.Init.getApplication().getChartModel().getLayout().getXaxes();
+		if(xaxes.length==0){xaxes.push(new ae.chart.model.axis.Axis());}
+		this._controller = new qx.data.controller.List(yaxes, this.list,"title");
 		this._controller.setLabelOptions({
 			converter : function(data, model) {
-				return "y"+axes.indexOf(model);
+				return "y"+(yaxes.indexOf(model)+1);
 			}
 		});
+		
+		radioButtonGroupHBox.addListener('changeSelection',function(e){
+	    	if(e.getData()[0].getLabel()=="X axes"){
+	    		this._controller.setModel(xaxes);
+	    		this._controller.setLabelOptions({
+	    			converter : function(data, model) {
+	    				return "x"+(xaxes.indexOf(model)+1);
+	    			}
+	    		});
+	    	}else{
+	    		this._controller.setModel(yaxes);
+	    		this._controller.setLabelOptions({
+	    			converter : function(data, model) {
+	    				return "y"+(yaxes.indexOf(model)+1);
+	    			}
+	    		});
+	    	}
+	    },this);
 		
 		var splitpane = new qx.ui.splitpane.Pane("vertical").set({margin:5});
         splitpane.getChildControl("splitter").setBackgroundColor("white");

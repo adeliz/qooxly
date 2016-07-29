@@ -7,7 +7,9 @@ qx.Class.define("ae.qooxly.ui.form.Data", {
 		this.setLayout(layout);
 		layout.setSeparator("separator-vertical");
 		
-		var textarea = new qx.ui.form.TextArea();
+		var textarea = new qx.ui.form.TextArea().set({
+			placeholder:"X,Y,Text\n0,2,valA\n1,1,valB\n1,3,valC"
+		});
 		
 		var button = new qx.ui.form.Button(this.tr("Update"));
 		button.addListener("execute",function(e){
