@@ -135,10 +135,7 @@ qx.Class.define("ae.qooxly.Application", {
 	        header.add(new qx.ui.core.Widget(),{flex:1});
 
 	        workbench.add(header);
-	        //----------------------------ToolBar-------------------------------------------------
-	        this.setToolBar(new ae.qooxly.ui.ToolBar());
-	        workbench.add(this.getToolBar());
-	        //----------------------------Body----------------------------------------------------
+	      //----------------------------Body----------------------------------------------------
 
 	        var splitpane = new qx.ui.splitpane.Pane("horizontal").set({margin:5});
 	        splitpane.getChildControl("splitter").setBackgroundColor("white");
@@ -179,6 +176,11 @@ qx.Class.define("ae.qooxly.Application", {
 	        
 	        window.Qooxly=qxchart;
 	        this.setChartView(qxchart);
+	        
+	        //----------------------------ToolBar-------------------------------------------------
+	        this.setToolBar(new ae.qooxly.ui.ToolBar());
+	        workbench.add(this.getToolBar());
+	        
 
 	        splitpane.add(this.getChartView(), 2);
 

@@ -30,26 +30,28 @@ qx.Class.define("ae.qooxly.ui.ToolBar",{
         projectpart.add(saveProjectButton);
         
         //drag mode part
-        var dragmodePart = new qx.ui.toolbar.Part().set({enabled:false});
+        var dragmodePart = new qx.ui.toolbar.Part().set({enabled:true});
         this.add(dragmodePart);
         
         var panButton = new qx.ui.toolbar.RadioButton(this.tr("Pan"),"ae/qooxly/icons/move.png").set({
-            show:"icon",
+        	model:qx.data.marshal.Json.createModel("pan"),
+        	show:"icon",
             toolTipText:this.tr("Pan")
         });
-        panButton.addListener("execute",function(e){
+        /*panButton.addListener("execute",function(e){
         	qx.core.Init.getApplication().getChartView().relayout({"dragmode":"pan"});
         	Plotly.Fx.init(qx.core.Init.getApplication().getChartView().getPlotlyDiv());
-        });
+        });*/
 
         var zoomButton = new qx.ui.toolbar.RadioButton(this.tr("Zoom"),"ae/qooxly/icons/zoom.png").set({
+        	model:qx.data.marshal.Json.createModel("zoom"),
             show:"icon",
             toolTipText:this.tr("Zoom")
         });
-        zoomButton.addListener("execute",function(e){
+        /*zoomButton.addListener("execute",function(e){
         	qx.core.Init.getApplication().getChartView().relayout({"dragmode":"zoom"});
         	Plotly.Fx.init(qx.core.Init.getApplication().getChartView().getPlotlyDiv());
-        });
+        });*/
         
         var selectBoxButton = new qx.ui.toolbar.RadioButton(this.tr("Box select"),"ae/qooxly/icons/select.png").set({
             show:"icon",
@@ -70,14 +72,18 @@ qx.Class.define("ae.qooxly.ui.ToolBar",{
         });
         
         var radioGroup1 = new qx.ui.form.RadioGroup(panButton,zoomButton,selectBoxButton,lassoBoxButton);
-        radioGroup1.setAllowEmptySelection(true);
-        panButton.setValue(false);
+        //radioGroup1.setAllowEmptySelection(true);
+        //panButton.setValue(false);
+        radioGroup1.setSelection([zoomButton]);
+        qx.core.Init.getApplication().getChartView().bind("model.layout.dragmode", radioGroup1, "modelSelection[0]");
+        radioGroup1.bind("modelSelection[0]", qx.core.Init.getApplication().getChartView(),"model.layout.dragmode" );
+        
         
         dragmodePart.add(panButton);
         dragmodePart.add(zoomButton);
-        dragmodePart.addSeparator();
+        /*dragmodePart.addSeparator();
         dragmodePart.add(selectBoxButton);
-        dragmodePart.add(lassoBoxButton);
+        dragmodePart.add(lassoBoxButton);*/
         
         //Hover mode part
         var hovermodePart = new qx.ui.toolbar.Part().set({enabled:false});
