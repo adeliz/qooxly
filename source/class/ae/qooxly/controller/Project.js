@@ -88,11 +88,33 @@ qx.Class.define("ae.qooxly.controller.Project",{
             commands.addXAxis = new qx.ui.command.Command();
             commands.addXAxis.addListener("execute", function(){
             	var model = qx.core.Init.getApplication().getChartView().getModel();
-            	model.getLayout().getXaxes().push(new ae.chart.model.axis.Axis());
+            	if(model.getLayout().getXaxes().length==0){
+            		model.getLayout().getXaxes().push(new ae.chart.model.axis.Axis());
+            	}else{
+            		model.getLayout().getXaxes().push(new ae.chart.model.axis.Axis().set({overlaying:'x'}));
+            	}
             }, this);
             
-            commands.removeAxis = new qx.ui.command.Command();
+            commands.removeAxis = new qx.ui.command.Command().set({enabled:false});
             commands.removeAxis.addListener("execute", function(){
+            	var model = qx.core.Init.getApplication().getChartView().getModel();
+            	var axes = qx.core.Init.getApplication()._axesEditor._controller.getModel();
+            	var axis = qx.core.Init.getApplication()._axesEditor._controller.getSelection().getItem(0);
+            	var letter = qx.core.Init.getApplication()._axesEditor.radioButtonGroupHBox.getSelection()[0].getLabel()[0];
+
+            	if(axis!=null && axes.length>0){
+            		if(letter=="X"){
+            			model.getLayout().getXaxes().remove(axis);
+            			var axes = model.getLayout().getXaxes();
+            			model.getLayout().setXaxes(axes);
+            		}
+            		if(letter=="Y"){
+            			model.getLayout().getYaxes().remove(axis);
+            			var axes = model.getLayout().getYaxes();
+            			model.getLayout().setYaxes(axes);
+            		}
+            		
+            	}
             	/*var axis = qx.core.Init.getApplication()._stack.__treeView.treeController.getSelection().getItem(0);
             	if(axis!=null){
             		if(axis.getName().substring(0,5)=="xaxis" || axis.getName().substring(0,5)=="yaxis" ){

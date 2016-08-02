@@ -1,17 +1,18 @@
 qx.Class.define("ae.qooxly.ui.form.Data", {
 	extend : qx.ui.container.Composite,
 
-	construct : function() {
+	construct : function(controller) {
 		this.base(arguments);
 		var layout = new qx.ui.layout.VBox;
 		this.setLayout(layout);
-		layout.setSeparator("separator-vertical");
 		
 		var textarea = new qx.ui.form.TextArea().set({
 			placeholder:"X,Y,Text\n0,2,valA\n1,1,valB\n1,3,valC"
 		});
 		
-		var button = new qx.ui.form.Button(this.tr("Update"));
+		var button = new qx.ui.form.Button(this.tr("Update")).set({
+			marginTop:5
+		});
 		button.addListener("execute",function(e){
 			var selection = qx.core.Init.getApplication()._tracesEditor._controller.getSelection().getItem(0);
 			
@@ -37,7 +38,7 @@ qx.Class.define("ae.qooxly.ui.form.Data", {
 		this.add(button);
 		
 		//binding
-    	this.controller = qx.core.Init.getApplication()._tracesEditor._controller;
+    	this.controller = controller;
     	this.controller.bind("selection[0]", textarea, "value",{
     		converter : function(value){
     			if(value && value.getX()){

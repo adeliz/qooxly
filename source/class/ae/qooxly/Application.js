@@ -188,24 +188,8 @@ qx.Class.define("ae.qooxly.Application", {
 	        
 	        var page1 = new qx.ui.tabview.Page("Traces");
 	        page1.setLayout(new qx.ui.layout.VBox());
-	        var splitpane2 = new qx.ui.splitpane.Pane("vertical").set({margin:5});
-	        splitpane2.getChildControl("splitter").setBackgroundColor("white");
 	        this._tracesEditor = new ae.qooxly.ui.Traces();
-	        splitpane2.add(this._tracesEditor,0);
-	        
-	        var tabView2 = new qx.ui.tabview.TabView();
-	        var page21 = new qx.ui.tabview.Page("Data");
-	        page21.setLayout(new qx.ui.layout.VBox());
-	        page21.add(new ae.qooxly.ui.form.Data(),{flex:1});
-	        tabView2.add(page21);
-	        
-	        var page22 = new qx.ui.tabview.Page("Properties");
-	        page22.setLayout(new qx.ui.layout.VBox());
-	        page22.add(new ae.qooxly.ui.form.Scatter(),{flex:1});
-	        tabView2.add(page22);
-	        
-	        splitpane2.add(tabView2,1);
-	        page1.add(splitpane2,{flex:1});
+	        page1.add(this._tracesEditor,{flex:1});
 	        tabView.add(page1);
 	        
 	        var page2 = new qx.ui.tabview.Page("Layout");

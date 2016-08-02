@@ -7,6 +7,7 @@ qx.Class.define("ae.qooxly.ui.form.Axis", {
 		this.setLayout(layout);
 		layout.setSeparator("separator-vertical");
 		this.setWidth(250);
+		this.setEnabled(false);
 
 		var container = new qx.ui.container.Composite(
 				new qx.ui.layout.VBox()).set({

@@ -9,7 +9,7 @@ qx.Class.define("ae.qooxly.ui.Axes", {
 		this.setDecorator(null);
 		this.setWidth(250);
 
-		var radioButtonGroupHBox = new qx.ui.form.RadioButtonGroup();
+		var radioButtonGroupHBox = this.radioButtonGroupHBox = new qx.ui.form.RadioButtonGroup();
 	    radioButtonGroupHBox.setLayout(new qx.ui.layout.HBox(5));
 	    radioButtonGroupHBox.setDecorator(null);
 	    var yradio = new qx.ui.form.RadioButton("Y axes");
@@ -17,9 +17,7 @@ qx.Class.define("ae.qooxly.ui.Axes", {
 	    radioButtonGroupHBox.add(yradio);
 	    radioButtonGroupHBox.setSelection([yradio]);
 	    
-		this.list = new qx.ui.form.List().set({
-			decorator : "main"
-		});
+		this.list = new qx.ui.form.List();
 
 		var yaxes = qx.core.Init.getApplication().getChartModel().getLayout().getYaxes();
 		if(yaxes.length==0){yaxes.push(new ae.chart.model.axis.Axis());}
@@ -59,8 +57,24 @@ qx.Class.define("ae.qooxly.ui.Axes", {
         container.add(this.list, {flex : 1});
         
         splitpane.add(container,0);
-        splitpane.add(new ae.qooxly.ui.form.Axis(this),1);
+        var axis = new ae.qooxly.ui.form.Axis(this);
+        splitpane.add(axis,1);
         
         this.add(splitpane,{flex:1});
+        
+        this._controller.addListener("changeSelection",function(e){
+        	if(e.getData().length<=0){
+        		axis.setEnabled(false);
+        		qx.core.Init.getApplication().projectController.getCommand("removeAxis").setEnabled(false);
+        	}else{
+        		axis.setEnabled(true);
+        		if(this._controller.getModel().length>1){
+        			qx.core.Init.getApplication().projectController.getCommand("removeAxis").setEnabled(true);
+        		}else{
+        			qx.core.Init.getApplication().projectController.getCommand("removeAxis").setEnabled(false);
+        		}
+        		
+        	}
+        },this)
 	}
 })

@@ -1,7 +1,7 @@
 qx.Class.define("ae.qooxly.ui.form.Scatter", {
 	extend : qx.ui.container.Composite,
 
-	construct : function() {
+	construct : function(controller) {
 		this.base(arguments);
 		var layout = new qx.ui.layout.VBox;
 		this.setLayout(layout);
@@ -202,7 +202,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		this.add(scroll,{flex:1});
 		
 		//binding
-    	this.controller = qx.core.Init.getApplication()._tracesEditor._controller;
+    	this.controller = controller;
     	this.controller.bind("selection[0]", this.ptfcontroller, "model",{
     		converter : function(value){
     			if(value!=null && value.getTextfont()==null){
