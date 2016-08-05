@@ -25,22 +25,22 @@ qx.Class.define("ae.qooxly.controller.Project",{
 
             	var chart = qx.core.Init.getApplication().getChartView();
             	var model = new ae.chart.model.Chart();
-            	/*var layout = new ae.chart.model.layout.Layout().set({
-            		autosize:true
-            	});
+            	var layout = new ae.chart.model.layout.Layout();
+            	layout.getXaxes().push(new ae.chart.model.axis.Axis());
+            	layout.getYaxes().push(new ae.chart.model.axis.Axis());
             	
-            	model.setLayout(layout);*/
+            	model.setLayout(layout);
             	
             	var scatter = new ae.chart.model.trace.Scatter();
             	model.addTrace(scatter);
-            	console.log(model.toJson());
+            	//console.log(model.toJson());
             	chart.setModel(model);
             	//layout.setAutosize(true);
             	//model.setLayout(new ae.chart.model.layout.Layout());
             	//model.removeAllTraces();
             }, this);
             
-            commands.open = new qx.ui.command.Command("Control+O").set({enabled:false});
+            commands.open = new qx.ui.command.Command("Control+O");
             commands.open.addListener("execute", function(){
             	this.openPlot();
             }, this);
@@ -286,7 +286,22 @@ qx.Class.define("ae.qooxly.controller.Project",{
         },
         
         loadFromJson : function(obj){
-        	qx.core.Init.getApplication().getChartView().plot(obj.data, obj.layout);
+        	
+        	var model = new ae.chart.model.Chart();
+        	qx.core.Init.getApplication().getChartView().setModel(model.fromJson(obj));
+        	
+        	/*var chart = qx.core.Init.getApplication().getChartView();
+        	var model = new ae.chart.model.Chart();
+        	var layout = new ae.chart.model.layout.Layout().set({
+        		title:"Blabla"
+        	});
+        	
+        	model.setLayout(layout);
+        	
+        	var scatter = new ae.chart.model.trace.Scatter();
+        	model.addTrace(scatter);
+        	//console.log(model.toJson());
+        	chart.setModel(model);*/
         },
         
         loadFromUrl : function(url){
@@ -391,3 +406,4 @@ qx.Class.define("ae.qooxly.controller.Project",{
         }
     }
 });
+

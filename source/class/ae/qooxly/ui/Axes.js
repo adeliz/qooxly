@@ -20,29 +20,35 @@ qx.Class.define("ae.qooxly.ui.Axes", {
 		this.list = new qx.ui.form.List();
 
 		var yaxes = qx.core.Init.getApplication().getChartModel().getLayout().getYaxes();
-		if(yaxes.length==0){yaxes.push(new ae.chart.model.axis.Axis());}
+		/*if(yaxes.length==0){yaxes.push(new ae.chart.model.axis.Axis());}
 		var xaxes = qx.core.Init.getApplication().getChartModel().getLayout().getXaxes();
-		if(xaxes.length==0){xaxes.push(new ae.chart.model.axis.Axis());}
-		this._controller = new qx.data.controller.List(yaxes, this.list,"title");
+		if(xaxes.length==0){xaxes.push(new ae.chart.model.axis.Axis());}*/
+		this._controller = new qx.data.controller.List(null, this.list,"title");
+		qx.core.Init.getApplication().getChartView().bind("model.layout.yaxes",this._controller,"model");
 		this._controller.setLabelOptions({
 			converter : function(data, model) {
-				return "y"+(yaxes.indexOf(model)+1);
+				return model.getTitle() ? "y"+(yaxes.indexOf(model)+1)+" : "+model.getTitle() : "y"+(yaxes.indexOf(model)+1);
 			}
 		});
 		
 		radioButtonGroupHBox.addListener('changeSelection',function(e){
 	    	if(e.getData()[0].getLabel()=="X axes"){
-	    		this._controller.setModel(xaxes);
+	    		qx.core.Init.getApplication().getChartView().bind("model.layout.xaxes",this._controller,"model");
+	    		//this._controller.setModel(xaxes);
 	    		this._controller.setLabelOptions({
 	    			converter : function(data, model) {
-	    				return "x"+(xaxes.indexOf(model)+1);
+	    				var xaxes = qx.core.Init.getApplication().getChartView().getModel().getLayout().getXaxes();
+	    				return model.getTitle() ? "x"+(xaxes.indexOf(model)+1)+" : "+model.getTitle() : "x"+(xaxes.indexOf(model)+1);
 	    			}
 	    		});
 	    	}else{
-	    		this._controller.setModel(yaxes);
+	    		qx.core.Init.getApplication().getChartView().bind("model.layout.yaxes",this._controller,"model");
+	    		
+	    		//this._controller.setModel(yaxes);
 	    		this._controller.setLabelOptions({
 	    			converter : function(data, model) {
-	    				return "y"+(yaxes.indexOf(model)+1);
+	    				var yaxes = qx.core.Init.getApplication().getChartView().getModel().getLayout().getYaxes();
+	    				return model.getTitle() ? "y"+(yaxes.indexOf(model)+1)+" : "+model.getTitle() : "y"+(yaxes.indexOf(model)+1);
 	    			}
 	    		});
 	    	}
@@ -73,7 +79,6 @@ qx.Class.define("ae.qooxly.ui.Axes", {
         		}else{
         			qx.core.Init.getApplication().projectController.getCommand("removeAxis").setEnabled(false);
         		}
-        		
         	}
         },this)
 	}

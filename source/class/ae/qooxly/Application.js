@@ -141,35 +141,31 @@ qx.Class.define("ae.qooxly.Application", {
 	        splitpane.getChildControl("splitter").setBackgroundColor("white");
 	        
 	        var chartLayout = new ae.chart.model.layout.Layout().set({
-	        	title:"My chart"
+	        	title:"Basic example"
 	        });
+	        chartLayout.getXaxes().push(new ae.chart.model.axis.Axis());
+	        chartLayout.getYaxes().push(new ae.chart.model.axis.Axis());
 	        //var font = new ae.chart.model.Font(null,"Arial","#FF0FF0");
 	        //chartLayout.setFont(font);
 	        model.setLayout(chartLayout);
 	        var scatter = new ae.chart.model.trace.Scatter();
-	        scatter.setX([1, 2, 3, 4]);
+	        scatter.setX([1, 5, 10, 12]);
 	        scatter.setY([10, 15, 13, 17]);
-	        scatter.setMode("markers");
-	        //scatter.setName("Temperature");
+	        scatter.setText(["valA", "valB", "", "valD"]);
+	        scatter.setTextposition("top");
+	        scatter.setMode("markers+text");
+	        scatter.setName("First trace");
 	        model.addTrace(scatter);
 	        var scatter2 = new ae.chart.model.trace.Scatter();
-	        scatter2.setX([1, 2, 3, 4]);
-	        scatter2.setY([8, 12, 18, 12]);
-	        scatter2.setText(["valA", "valB", "", "valD"]);
+	        scatter2.setX([1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15]);
+	        scatter2.setY([8, 12, 18, 12,6,11,9,12,14,8,7,13,12,7]);
+	        
 	        scatter2.setMode("lines");
-	        scatter2.setName("Humidity");
+	        scatter2.setName("Second trace");
 	        //var font = new ae.chart.model.Font(36,"Arial","#FF0FF0");
 	        //scatter2.setTextfont(font);
 	        model.addTrace(scatter2);
-	        var scatter3 = new ae.chart.model.trace.Scatter();
-	        scatter3.setX([1, 2, 3, 4]);
-	        scatter3.setY([18, 14, 7, 9]);
-	        scatter3.setMode("lines");
-	        scatter3.setConnectgaps(true);
-	        scatter3.setOpacity(0.2);
-	        scatter3.setVisible(false);
-	        
-	        model.addTrace(scatter3);
+        	
 	        var qxchart = new ae.chart.ui.Chart(model).set({
 	        	decorator : "main"
 	        });

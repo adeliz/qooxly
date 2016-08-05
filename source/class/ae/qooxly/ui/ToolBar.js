@@ -95,14 +95,14 @@ qx.Class.define("ae.qooxly.ui.ToolBar",{
         hovermodePart.add(closestButton);
         hovermodePart.add(falseButton);
         
-        this.addSpacer();
+        /*this.addSpacer();
         var viewPart = new qx.ui.toolbar.Part();
         var redrawButton = new qx.ui.toolbar.Button(this.tr("Redraw"));
         redrawButton.addListener("execute",function(e){
         	qx.core.Init.getApplication().getChartView().redraw();
         });
         viewPart.add(redrawButton);
-        this.add(viewPart);
+        this.add(viewPart);*/
         
 		
         

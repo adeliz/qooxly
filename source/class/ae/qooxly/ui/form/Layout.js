@@ -108,20 +108,17 @@ qx.Class.define("ae.qooxly.ui.form.Layout", {
 		//var controller = new qx.data.controller.Object(qx.core.Init.getApplication().getChartModel());
 		qx.core.Init.getApplication().getChartView().bind("model.layout", this.ptfcontroller, "model",{
     		converter : function(value){
-    			//console.log(value);
     			if(value.getTitlefont()==null && value.getFont()==null){
     				value.setTitlefont(new ae.chart.model.Font());
     				value.setFont(new ae.chart.model.Font());
-    				return value;
     			}
     			if(value.getFont()==null){
     				value.setFont(new ae.chart.model.Font());
-    				return value;
     			}
     			if(value.getTitlefont()==null){
     				value.setTitlefont(new ae.chart.model.Font());
-    				return value;
     			}
+    			return value;
     		}
     	});
 	}
