@@ -1,10 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-  <title>qooxly</title>
-  <script type="text/javascript" src="script/ae.qooxly.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+<title>Qooxly</title>
+<style>
+	html, body {
+		height: 100%;
+		margin: 0px;
+		padding: 0px;
+		font-family: arial, "Segoe UI", sans-serif;
+		font-size: 14px;
+		color: #444;
+	}
+	
+	#splash {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 180px;
+		height: 300px;
+		margin: auto;
+	}
+	
+	#splash:before {
+		content: url(resource/ae/qooxly/app_header.png);
+		float: left;
+		margin-right: 10px;
+	}
+	
+	h1, h2 {
+		margin: 0px 0px 10px 0px;
+		padding: 0px;
+		font-weight: normal;
+	}
+	
+	h1 {
+		color: #444;
+		font-size: 36px;
+		margin-bottom: 0px;
+	}
+	
+	h2 {
+		color: #888;
+		font-size: 16px;
+	}
+	
+	hr {
+		border: 0;
+		height: 0;
+		border-top: 1px solid rgba(0, 0, 0, 0.4);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	}
+</style>
+<script type="text/javascript" src="script/ae.qooxly.js"></script>
 </head>
-<body></body>
+<body>
+	<div id="splash">
+	    <h1>Qooxly</h1>
+	    <h2>Chart editor</h2>
+		<hr>
+	    <div style="text-align: center;">Application is loading...</div>
+	
+	</div>
+</body>
 </html>
