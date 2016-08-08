@@ -154,6 +154,7 @@ qx.Class.define("ae.qooxly.Application", {
 	        scatter.setText(["valA", "valB", "", "valD"]);
 	        scatter.setTextposition("top");
 	        scatter.setMode("markers+text");
+	        scatter.setTextposition("top center");
 	        scatter.setName("First trace");
 	        model.addTrace(scatter);
 	        var scatter2 = new ae.chart.model.trace.Scatter();

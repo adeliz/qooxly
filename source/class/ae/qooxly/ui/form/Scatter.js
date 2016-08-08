@@ -43,7 +43,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 	        controller.bindProperty("label", "label", null, item, index);
 	        controller.bindProperty("data", "model", null, item, index);
 	    }});
-	    ssController.setModel(smodel);		      
+	    ssController.setModel(smodel);	      
 
 	    var fillSelectBox = new qx.ui.form.SelectBox();
 		var fill = [
@@ -78,6 +78,26 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 			//maxHeight:20
         });
 		
+		var textposition = new qx.ui.form.SelectBox();
+		var pos = [
+          {label: this.tr("Top left"), data: "top left"},
+          {label: this.tr("Top center"), data: "top center"},
+          {label: this.tr("Top right"), data: "top right"},
+          {label: this.tr("Middle left"), data: "middle left"},
+          {label: this.tr("Middle center"), data: "middle center"},
+          {label: this.tr("Middle right"), data: "middle right"},
+          {label: this.tr("Bottom left"), data: "bottom left"},
+          {label: this.tr("Bottom center"), data: "bottom center"},
+          {label: this.tr("Bottom right"), data: "bottom right"}
+        ];
+        var tmodel = qx.data.marshal.Json.createModel(pos);
+        var tController = new qx.data.controller.List(null, textposition);
+	    tController.setDelegate({bindItem: function(controller, item, index) {
+	        controller.bindProperty("label", "label", null, item, index);
+	        controller.bindProperty("data", "model", null, item, index);
+	    }});
+	    tController.setModel(tmodel);	
+	    
 		var xaxis = new qx.ui.form.TextField();
 		var yaxis = new qx.ui.form.TextField();
 		
@@ -185,6 +205,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		form.add(connectgapsCheckBox,this.tr("Connect gaps"),null,"connectgaps");
 		form.add(showlegendCheckBox,this.tr("Show legend"),null,"showlegend");
 		form.add(visibleCheckBox,this.tr("Visible"),null,"visible");
+		form.add(textposition,this.tr("Text position"),null,"textposition");
 		form.add(xaxis,this.tr("X axis"),null,"xaxis");
 		form.add(yaxis,this.tr("Y axis"),null,"yaxis");
 		
