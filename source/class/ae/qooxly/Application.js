@@ -158,7 +158,7 @@ qx.Class.define("ae.qooxly.Application", {
 	        scatter.setName("First trace");
 	        model.addTrace(scatter);
 	        var scatter2 = new ae.chart.model.trace.Scatter();
-	        scatter2.setX([1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15]);
+	        scatter2.setX([1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14]);
 	        scatter2.setY([8, 12, 18, 12,6,11,9,12,14,8,7,13,12,7]);
 	        
 	        scatter2.setMode("lines");

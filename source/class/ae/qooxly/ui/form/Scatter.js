@@ -101,6 +101,64 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		var xaxis = new qx.ui.form.TextField();
 		var yaxis = new qx.ui.form.TextField();
 		
+		var linecolor = new ae.qooxly.ui.ColorField();
+		var linewidth = new qx.ui.form.Spinner();
+		var dash = new qx.ui.form.SelectBox();
+		var dashs = [
+          {label: this.tr("Solid"), data: "solid"},
+          {label: this.tr("Dot"), data: "dot"},
+          {label: this.tr("Dash"), data: "dash"},
+          {label: this.tr("Long dash"), data: "longdash"},
+          {label: this.tr("Dash dot"), data: "dashdot"},
+          {label: this.tr("Long dash dot"), data: "longdashdot"}
+        ];
+        var dashmodel = qx.data.marshal.Json.createModel(dashs);
+        var dashController = new qx.data.controller.List(null, dash);
+        dashController.setDelegate({bindItem: function(controller, item, index) {
+	        controller.bindProperty("label", "label", null, item, index);
+	        controller.bindProperty("data", "model", null, item, index);
+	    }});
+	    dashController.setModel(dashmodel);
+	    
+	    var lineshape = new qx.ui.form.SelectBox();
+		var lineshapes = [
+          {label: this.tr("Linear"), data: "linear"},
+          {label: this.tr("Spline"), data: "spline"},
+          {label: this.tr("HV"), data: "hv"},
+          {label: this.tr("VH"), data: "vh"},
+          {label: this.tr("HVH"), data: "hvh"},
+          {label: this.tr("VHV"), data: "vhv"}
+        ];
+        var lineshapemodel = qx.data.marshal.Json.createModel(lineshapes);
+        var lineshapeController = new qx.data.controller.List(null, lineshape);
+        lineshapeController.setDelegate({bindItem: function(controller, item, index) {
+	        controller.bindProperty("label", "label", null, item, index);
+	        controller.bindProperty("data", "model", null, item, index);
+	    }});
+        lineshapeController.setModel(lineshapemodel);
+	    
+		var symbol = new qx.ui.form.SelectBox();
+		var symbols = [
+          {label: this.tr("Circle"), data: "circle"},
+          {label: this.tr("Square"), data: "square"},
+          {label: this.tr("Triangle"), data: "triangle-up"},
+          {label: this.tr("Star"), data: "star"}
+        ];
+        var symbolmodel = qx.data.marshal.Json.createModel(symbols);
+        var symbolController = new qx.data.controller.List(null, symbol);
+        symbolController.setDelegate({bindItem: function(controller, item, index) {
+	        controller.bindProperty("label", "label", null, item, index);
+	        controller.bindProperty("data", "model", null, item, index);
+	    }});
+	    symbolController.setModel(symbolmodel);
+	    var markersize = new qx.ui.form.Spinner(6);
+	    var markercolor = new ae.qooxly.ui.ColorField();
+	    var markeropacity = this.mOpacity = new qx.ui.form.Slider().set({
+			minimum: 0,
+			maximum: 100,
+			singleStep: 1
+        });
+		
 		this.ptfcontroller = new qx.data.controller.Form(null, form);
 		
 		/*var clazz = qx.Class.getByName("ae.chart.model.trace.Scatter"); 
@@ -209,6 +267,28 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		form.add(xaxis,this.tr("X axis"),null,"xaxis");
 		form.add(yaxis,this.tr("Y axis"),null,"yaxis");
 		
+		form.addGroupHeader("Marker");
+		form.add(symbol,this.tr("Symbol"),null,"marker.symbol");
+		form.add(markersize,this.tr("Size"),null,"marker.size");
+		form.add(markercolor,this.tr("Color"),null,"marker.color");
+		form.add(markeropacity, this.tr("Opacity"),null,"marker.opacity");
+		this.ptfcontroller.addBindingOptions("marker.opacity", {
+			converter : function(value) {
+				return value*100;
+			}
+		},
+		{
+			converter : function(value) {
+				return value/100;
+			}
+		});
+		
+		form.addGroupHeader("Line");
+		form.add(linecolor,this.tr("Color"),null,"line.color");
+		form.add(linewidth,this.tr("Width"),null,"line.width");
+		form.add(dash,this.tr("Style"),null,"line.dash");
+		form.add(lineshape,this.tr("Shape"),null,"line.shape");
+		
 		form.addGroupHeader("Font");
 		form.add(familytextTf,this.tr("Font family"),null,"textfont.family");
 		form.add(sizetextTf,this.tr("Font size"),null,"textfont.size");
@@ -226,12 +306,19 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
     	this.controller = controller;
     	this.controller.bind("selection[0]", this.ptfcontroller, "model",{
     		converter : function(value){
-    			if(value!=null && value.getTextfont()==null){
-    				value.setTextfont(new ae.chart.model.Font());
-    				return value;
-    			}else{
-    				return value;
+    			if(value!=null){
+    				if(value.getTextfont()==null){
+        				value.setTextfont(new ae.chart.model.Font());
+        			}
+    				if(value.getMarker()==null){
+        				value.setMarker(new ae.chart.model.trace.auxiliary.Marker());
+        			}
+    				if(value.getLine()==null){
+        				value.setLine(new ae.chart.model.trace.auxiliary.Line());
+        			}
     			}
+
+    			return value;
     		}
     	});
 	}
