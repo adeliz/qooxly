@@ -12,6 +12,7 @@
  * This is the main application class of qooxly. It's only used for testing.
  *
  * @asset(ae/qooxly/*)
+ * @asset(plotly/*)
  */
 qx.Class.define("ae.qooxly.Application", {
 	extend : qx.application.Standalone,
