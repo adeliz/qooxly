@@ -55,20 +55,7 @@ qx.Class.define("ae.qooxly.ui.form.Data", {
     				}
     				return string;
     			}
-    			
-    			//return value.getData().getX().toString();
     		}
     	});
-    	
-    	/*textarea.bind("value", this.controller, "selection[0]",{
-    		converter : function(data, model, source, target){
-    			console.log(data);
-    			console.log(model);
-    			console.log(source);
-    			console.log(target);
-    			
-    			//return value.getData().getX().toString();
-    		}
-    	});*/
 	}
 })

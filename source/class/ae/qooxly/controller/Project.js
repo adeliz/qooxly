@@ -74,6 +74,24 @@ qx.Class.define("ae.qooxly.controller.Project",{
             	
             }, this);
             
+            commands.addDatasource = new qx.ui.command.Command();
+            commands.addDatasource.addListener("execute", function(){
+            	var model = qx.core.Init.getApplication().getChartView().getModel();
+            	var ds = new ae.chart.model.Datasource();
+            	ds.setId("Datasource");
+            	model.getDatasources().push(ds);
+            }, this);
+            
+            commands.removeDatasource = new qx.ui.command.Command();
+            commands.removeDatasource.addListener("execute", function(){
+            	var model = qx.core.Init.getApplication().getChartView().getModel();
+            	var ds = qx.core.Init.getApplication()._datasourcesEditor._controller.getSelection().getItem(0);
+            	if(ds!=null){
+            		model.getDatasources().remove(ds);
+            	}
+            	
+            }, this);
+            
             commands.addYAxis = new qx.ui.command.Command();
             commands.addYAxis.addListener("execute", function(){
             	var model = qx.core.Init.getApplication().getChartView().getModel();

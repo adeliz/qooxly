@@ -55,19 +55,6 @@ qx.Class.define("ae.qooxly.ui.Traces", {
         		data.setEnabled(true);
         		qx.core.Init.getApplication().projectController.getCommand("removeTrace").setEnabled(true);
         	}
-        })
-        /*this._controller.bind("selection[0]",scatter,"enabled",{
-        	converter : function(value){
-        		var val = value? true : false;
-        		return val;
-        	}
-        })
-        
-        this._controller.bind("selection[0]",data,"enabled",{
-        	converter : function(value){
-        		var val = value? true : false;
-        		return val;
-        	}
-        })*/
+        });
 	}
 })

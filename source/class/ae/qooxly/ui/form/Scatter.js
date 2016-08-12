@@ -159,6 +159,15 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 			singleStep: 1
         });
 		
+	    var dsid = new qx.ui.form.TextField();
+	    var formatter = new qx.ui.form.TextField().set({enabled:false});
+	    var x = new qx.ui.form.Spinner();
+	    var y = new qx.ui.form.Spinner();
+	    var text = new qx.ui.form.Spinner();
+		var parameters = new qx.ui.form.TextArea().set({
+			placeholder:'{\n"x":"0",\n"y":"1"\n}'
+		});
+		
 		this.ptfcontroller = new qx.data.controller.Form(null, form);
 		
 		/*var clazz = qx.Class.getByName("ae.chart.model.trace.Scatter"); 
@@ -294,12 +303,48 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		form.add(sizetextTf,this.tr("Font size"),null,"textfont.size");
 		form.add(colortextTf,this.tr("Font color"),null,"textfont.color");
 		
+		form.addGroupHeader("Source");
+		form.add(dsid,this.tr("Datasource"),null,"source.id");
+		form.add(formatter,this.tr("Formatter"),null,"source.formatter");
+		form.add(x,this.tr("X"),null,"source.parameters.x");
+		form.add(y,this.tr("Y"),null,"source.parameters.y");
+		form.add(text,this.tr("Text"),null,"source.parameters.text");
+
+		/*form.add(parameters,this.tr("Parameters"),null,"source.parameters");
+		
+		this.ptfcontroller.addBindingOptions("source.parameters", {
+			converter : function(value) {
+				return (value) ? JSON.stringify(value) : null;
+			}
+		},
+		{
+			converter : function(value) {
+				return (value || value!="") ? JSON.parse(value) : null;
+			}
+		});*/
+		
 		var renderedForm = new qx.ui.form.renderer.Single(form);
 		renderedForm.getLayout().setColumnFlex(0,0);
 		renderedForm.getLayout().setColumnFlex(1,1);
 		
+		
+		
 		container.add(renderedForm,{flex:1});
-
+		
+		/*var form2 = new qx.ui.form.Form();
+		var x = new qx.ui.form.Spinner();
+	    var y = new qx.ui.form.Spinner();
+	    var text = new qx.ui.form.Spinner();
+	    controller2 = new qx.data.controller.Form(null, form2);
+		form2.add(x,this.tr("X"),null,"x");
+		form2.add(y,this.tr("Y"),null,"y");
+		form2.add(text,this.tr("Text"),null,"text");
+		var renderedForm2 = new qx.ui.form.renderer.Single(form2);
+		renderedForm2.getLayout().setColumnFlex(0,0);
+		renderedForm2.getLayout().setColumnFlex(1,1);
+		
+		container.add(renderedForm2,{flex:1});*/
+		
 		this.add(scroll,{flex:1});
 		
 		//binding
@@ -315,6 +360,21 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
         			}
     				if(value.getLine()==null){
         				value.setLine(new ae.chart.model.trace.auxiliary.Line());
+        			}
+    				if(value.getSource()==null){
+    					var src = new ae.chart.model.trace.auxiliary.Source();
+    					var model = qx.data.marshal.Json.createModel({x:0,y:1,text:null},true);
+    					src.setParameters(model);
+        				value.setSource(src);
+        				
+        				/*var ct = new qx.data.controller.Object(model);
+        				controller2.bind("model",src,"model.parameters",{
+        					converter : function(value){
+        						console.log(value);
+        						return JSON.stringify(value);
+        					}
+        				});*/
+        				//controller2.bind("model",ct,"model");
         			}
     			}
 

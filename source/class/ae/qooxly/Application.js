@@ -165,6 +165,32 @@ qx.Class.define("ae.qooxly.Application", {
 	        scatter2.setName("Second trace");
 	        //var font = new ae.chart.model.Font(36,"Arial","#FF0FF0");
 	        //scatter2.setTextfont(font);
+	        var ds = new ae.chart.model.Datasource().set({
+	        	id:"ds1",
+	        	url:"https://cors4js.appspot.com?url=http://ichart.finance.yahoo.com/table.csv?",
+	        	parameters:{
+	        		"s":"YHOO",
+					"a":"3",
+					"b":"12",
+					"c":"2015",
+					"d":"1",
+					"e":"28",
+					"f":"2016",
+					"g":"w"
+	        	},
+	        	data:"x,y\n0,1\n1,2"
+	        });
+	        model.getDatasources().push(ds);
+
+	        var source = new ae.chart.model.trace.auxiliary.Source().set({
+				id:"ds1",
+				formatter:"CSV",
+				parameters:{
+					x:0,
+					y:6
+				}
+			});
+	        //scatter2.setSource(source)
 	        model.addTrace(scatter2);
         	
 	        var qxchart = new ae.chart.ui.Chart(model).set({
@@ -199,6 +225,12 @@ qx.Class.define("ae.qooxly.Application", {
 	        this._axesEditor = new ae.qooxly.ui.Axes();
 	        page3.add(this._axesEditor,{flex:1});
 	        tabView.add(page3);
+	        
+	        var page4 = new qx.ui.tabview.Page("Datasources");
+	        page4.setLayout(new qx.ui.layout.VBox());
+	        this._datasourcesEditor = new ae.qooxly.ui.Datasources();
+	        page4.add(this._datasourcesEditor,{flex:1});
+	        tabView.add(page4);
 	        
 			
 			splitpane.add(tabView, 0);

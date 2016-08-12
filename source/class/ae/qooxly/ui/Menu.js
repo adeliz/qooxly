@@ -27,6 +27,16 @@ qx.Class.define("ae.qooxly.ui.Menu",
             var fileMenu = new qx.ui.menubar.Button(this.tr("Chart"), null, menufile);
             this.add(fileMenu);
             
+            //Datasources
+            var menuds = new qx.ui.menu.Menu();
+            var addDsButton = new qx.ui.menu.Button(this.tr("Add datasource"), null, qx.core.Init.getApplication().projectController.getCommand("addDatasource"));
+            var removeDsButton = new qx.ui.menu.Button(this.tr("Remove datasource"), null, qx.core.Init.getApplication().projectController.getCommand("removeDatasource"));
+            menuds.add(addDsButton);
+            menuds.add(removeDsButton);
+            
+            var dsMenu = new qx.ui.menubar.Button(this.tr("Datasources"), null, menuds);
+            this.add(dsMenu);
+            
             //Traces
             var menutraces = new qx.ui.menu.Menu();
             var addTraceButton = new qx.ui.menu.Button(this.tr("Add trace"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
