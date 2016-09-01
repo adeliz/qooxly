@@ -365,16 +365,8 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
     					var src = new ae.chart.model.trace.auxiliary.Source();
     					var model = qx.data.marshal.Json.createModel({x:0,y:1,text:null},true);
     					src.setParameters(model);
+    					src.setFormatter("CSV");
         				value.setSource(src);
-        				
-        				/*var ct = new qx.data.controller.Object(model);
-        				controller2.bind("model",src,"model.parameters",{
-        					converter : function(value){
-        						console.log(value);
-        						return JSON.stringify(value);
-        					}
-        				});*/
-        				//controller2.bind("model",ct,"model");
         			}
     			}
 
