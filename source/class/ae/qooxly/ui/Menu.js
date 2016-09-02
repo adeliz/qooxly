@@ -38,8 +38,17 @@ qx.Class.define("ae.qooxly.ui.Menu",
             this.add(dsMenu);
             
             //Traces
+            var menutracestypes = new qx.ui.menu.Menu();
+            var addLineButton = new qx.ui.menu.Button(this.tr("Line"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
+            var addScatterButton = new qx.ui.menu.Button(this.tr("Scatter"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
+            var addAreaButton = new qx.ui.menu.Button(this.tr("Area"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
+            menutracestypes.add(addScatterButton);
+            menutracestypes.add(addLineButton);
+            menutracestypes.add(addAreaButton);
+            
             var menutraces = new qx.ui.menu.Menu();
-            var addTraceButton = new qx.ui.menu.Button(this.tr("Add trace"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
+            //var addTraceButton = new qx.ui.menu.Button(this.tr("Add trace"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
+            var addTraceButton = new qx.ui.menu.Button(this.tr("Add trace"), null, null, menutracestypes);
             var removeTraceButton = new qx.ui.menu.Button(this.tr("Remove trace"), null, qx.core.Init.getApplication().projectController.getCommand("removeTrace"));
             menutraces.add(addTraceButton);
             menutraces.add(removeTraceButton);

@@ -59,9 +59,22 @@ qx.Class.define("ae.qooxly.controller.Project",{
             }, this);
             
             commands.addTrace = new qx.ui.command.Command();
-            commands.addTrace.addListener("execute", function(){
+            commands.addTrace.addListener("execute", function(e){
             	var model = qx.core.Init.getApplication().getChartView().getModel();
-            	model.addTrace(new ae.chart.model.trace.Scatter());
+            	var trace = new ae.chart.model.trace.Scatter()
+            	switch (e.getData().getLabel().__messageId){
+            		case "Scatter":
+            			trace.setMode("markers");
+            			break;
+            		case "Line":
+            			trace.setMode("lines");
+            			break;
+            		case "Area":
+            			trace.setMode("lines");
+            			trace.setFill("tozeroy");
+            			break;
+            	}
+            	model.addTrace(trace);
             }, this);
             
             commands.removeTrace = new qx.ui.command.Command();
