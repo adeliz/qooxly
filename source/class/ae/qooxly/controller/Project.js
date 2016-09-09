@@ -73,6 +73,12 @@ qx.Class.define("ae.qooxly.controller.Project",{
             			trace.setMode("lines");
             			trace.setFill("tozeroy");
             			break;
+            		case "Bar":
+            			trace = new ae.chart.model.trace.Bar().set({
+            				x:[0,1],
+            				y:[2,2]
+            			})
+            			break;
             	}
             	model.addTrace(trace);
             }, this);

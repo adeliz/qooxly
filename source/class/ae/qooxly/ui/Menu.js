@@ -42,9 +42,11 @@ qx.Class.define("ae.qooxly.ui.Menu",
             var addLineButton = new qx.ui.menu.Button(this.tr("Line"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
             var addScatterButton = new qx.ui.menu.Button(this.tr("Scatter"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
             var addAreaButton = new qx.ui.menu.Button(this.tr("Area"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
+            var addBarButton = new qx.ui.menu.Button(this.tr("Bar"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));
             menutracestypes.add(addScatterButton);
             menutracestypes.add(addLineButton);
             menutracestypes.add(addAreaButton);
+            menutracestypes.add(addBarButton);
             
             var menutraces = new qx.ui.menu.Menu();
             //var addTraceButton = new qx.ui.menu.Button(this.tr("Add trace"), null, qx.core.Init.getApplication().projectController.getCommand("addTrace"));

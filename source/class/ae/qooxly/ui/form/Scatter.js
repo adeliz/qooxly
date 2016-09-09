@@ -358,7 +358,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
     				if(value.getMarker()==null){
         				value.setMarker(new ae.chart.model.trace.auxiliary.Marker());
         			}
-    				if(value.getLine()==null){
+    				if(value.getYep=="scatter" && value.getLine()==null){
         				value.setLine(new ae.chart.model.trace.auxiliary.Line());
         			}
     				if(value.getSource()==null){
