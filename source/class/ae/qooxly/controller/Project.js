@@ -62,7 +62,7 @@ qx.Class.define("ae.qooxly.controller.Project",{
             commands.addTrace.addListener("execute", function(e){
             	var model = qx.core.Init.getApplication().getChartView().getModel();
             	var trace = new ae.chart.model.trace.Scatter()
-            	switch (e.getData().getLabel().__messageId){
+            	switch (e.getData().getUserData("type")){
             		case "Scatter":
             			trace.setMode("markers");
             			break;
