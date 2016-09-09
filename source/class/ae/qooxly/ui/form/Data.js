@@ -42,18 +42,23 @@ qx.Class.define("ae.qooxly.ui.form.Data", {
     	this.controller.bind("selection[0]", textarea, "value",{
     		converter : function(value){
     			if(value && value.getX()){
-    				//console.log(value.getX());
     				var string = "X,Y";
     				if(Array.isArray(value.getText())){
     					string = string+",Text";
     				}
     				for(var i=0;i<value.getX().length;i++){
-    					string = string+"\n"+ value.getX()[i]+","+value.getY()[i];
+    					if(Array.isArray(value.getX())){
+    						string = string+"\n"+ value.getX()[i]+","+value.getY()[i];
+    					}else{
+    						string = string+"\n"+ value.getX().getItem(i)+","+value.getY().getItem(i);
+    					}
     					if(Array.isArray(value.getText())){
     						string = string+","+value.getText()[i];
     					}
     				}
     				return string;
+    			}else{
+    				return null
     			}
     		}
     	});
