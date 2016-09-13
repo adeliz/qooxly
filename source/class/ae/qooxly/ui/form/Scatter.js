@@ -1,7 +1,7 @@
 qx.Class.define("ae.qooxly.ui.form.Scatter", {
 	extend : qx.ui.container.Composite,
 
-	construct : function(controller) {
+	construct : function() {
 		this.base(arguments);
 		var layout = new qx.ui.layout.VBox;
 		this.setLayout(layout);
@@ -101,7 +101,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		var xaxis = new qx.ui.form.TextField();
 		var yaxis = new qx.ui.form.TextField();
 		
-		var linecolor = new ae.qooxly.ui.ColorField();
+		var linecolor = this.linecolor = new ae.qooxly.ui.ColorField();
 		var linewidth = new qx.ui.form.Spinner();
 		var dash = new qx.ui.form.SelectBox();
 		var dashs = [
@@ -346,10 +346,8 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 		container.add(renderedForm2,{flex:1});*/
 		
 		this.add(scroll,{flex:1});
-		
-		//binding
-    	this.controller = controller;
-    	this.controller.bind("selection[0]", this.ptfcontroller, "model",{
+    	
+    	/*this.controller.bind("selection[0]", this.ptfcontroller, "model",{
     		converter : function(value){
     			if(value!=null){
     				if(value.getTextfont()==null){
@@ -358,7 +356,7 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
     				if(value.getMarker()==null){
         				value.setMarker(new ae.chart.model.trace.auxiliary.Marker());
         			}
-    				if(value.getYep=="scatter" && value.getLine()==null){
+    				if(value.getType()=="scatter" && value.getLine()==null){
         				value.setLine(new ae.chart.model.trace.auxiliary.Line());
         			}
     				if(value.getSource()==null){
@@ -372,6 +370,6 @@ qx.Class.define("ae.qooxly.ui.form.Scatter", {
 
     			return value;
     		}
-    	});
+    	});*/
 	}
 })

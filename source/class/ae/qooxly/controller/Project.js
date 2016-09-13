@@ -77,7 +77,7 @@ qx.Class.define("ae.qooxly.controller.Project",{
             			trace = new ae.chart.model.trace.Bar().set({
             				x:[0,1],
             				y:[2,2]
-            			})
+            			});
             			break;
             	}
             	model.addTrace(trace);

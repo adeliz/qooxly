@@ -35,26 +35,75 @@ qx.Class.define("ae.qooxly.ui.Traces", {
         
         var page2 = new qx.ui.tabview.Page("Properties");
         page2.setLayout(new qx.ui.layout.VBox());
-        var scatter = new ae.qooxly.ui.form.Scatter(this._controller);
-        page2.add(scatter,{flex:1});
+        this.properties = new qx.ui.container.Stack();
+        page2.add(this.properties,{flex:1});
         tabView.add(page2);
+        
+        this.scatter = new ae.qooxly.ui.form.Scatter();
+        this.properties.add(this.scatter);
+        this.bar = new ae.qooxly.ui.form.Bar();
+        this.properties.add(this.bar);
         
         splitpane.add(tabView,1);
         
         this.add(splitpane, {
 			flex : 1
 		});
-        
+
         this._controller.addListener("changeSelection",function(e){
         	if(e.getData().length<=0){
-        		scatter.setEnabled(false);
+        		this.properties.setEnabled(false);
         		data.setEnabled(false);
         		qx.core.Init.getApplication().projectController.getCommand("removeTrace").setEnabled(false);
         	}else{
-        		scatter.setEnabled(true);
+        		var selection = e.getData().getItem(0);
+        		switch(selection.getType()){
+	        		case "scatter":
+	        			this.properties.setSelection([this.scatter]);
+	        			if(selection!=null){
+	        				if(selection.getTextfont()==null){
+	        					selection.setTextfont(new ae.chart.model.Font());
+	            			}
+	        				if(selection.getMarker()==null){
+	        					selection.setMarker(new ae.chart.model.trace.auxiliary.Marker());
+	            			}
+	        				if(selection.getLine()==null){
+	        					selection.setLine(new ae.chart.model.trace.auxiliary.Line());
+	            			}
+	        				if(selection.getSource()==null){
+	        					var src = new ae.chart.model.trace.auxiliary.Source();
+	        					var model = qx.data.marshal.Json.createModel({x:0,y:1,text:null},true);
+	        					src.setParameters(model);
+	        					src.setFormatter("CSV");
+	        					selection.setSource(src);
+	            			}
+	        			}
+	        			this.scatter.ptfcontroller.setModel(selection);
+	        			break;
+	        		case "bar":
+	        			this.properties.setSelection([this.bar]);
+	        			if(selection!=null){
+	        				if(selection.getTextfont()==null){
+	        					selection.setTextfont(new ae.chart.model.Font());
+	            			}
+	        				if(selection.getMarker()==null){
+	        					selection.setMarker(new ae.chart.model.trace.auxiliary.Marker());
+	            			}
+	        				if(selection.getSource()==null){
+	        					var src = new ae.chart.model.trace.auxiliary.Source();
+	        					var model = qx.data.marshal.Json.createModel({x:0,y:1,text:null},true);
+	        					src.setParameters(model);
+	        					src.setFormatter("CSV");
+	        					selection.setSource(src);
+	            			}
+	        			}
+	        			this.bar.ptfcontroller.setModel(selection);
+	        			break;
+        		}
+        		this.properties.setEnabled(true);
         		data.setEnabled(true);
         		qx.core.Init.getApplication().projectController.getCommand("removeTrace").setEnabled(true);
         	}
-        });
+        },this);
 	}
 })
