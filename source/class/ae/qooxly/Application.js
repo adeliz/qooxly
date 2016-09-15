@@ -210,24 +210,24 @@ qx.Class.define("ae.qooxly.Application", {
 
 	        var tabView = new qx.ui.tabview.TabView();
 	        
-	        var page1 = new qx.ui.tabview.Page("Traces");
+	        var page1 = new qx.ui.tabview.Page("Traces","ae/qooxly/icons/traces.png");
 	        page1.setLayout(new qx.ui.layout.VBox());
 	        this._tracesEditor = new ae.qooxly.ui.Traces();
 	        page1.add(this._tracesEditor,{flex:1});
 	        tabView.add(page1);
 	        
-	        var page2 = new qx.ui.tabview.Page("Layout");
+	        var page2 = new qx.ui.tabview.Page("Layout","ae/qooxly/icons/layout.png");
 	        page2.setLayout(new qx.ui.layout.VBox());
 	        page2.add(new ae.qooxly.ui.form.Layout(),{flex:1});
 	        tabView.add(page2);
 	        
-	        var page3 = new qx.ui.tabview.Page("Axes");
+	        var page3 = new qx.ui.tabview.Page("Axes","ae/qooxly/icons/axes.png");
 	        page3.setLayout(new qx.ui.layout.VBox());
 	        this._axesEditor = new ae.qooxly.ui.Axes();
 	        page3.add(this._axesEditor,{flex:1});
 	        tabView.add(page3);
 	        
-	        var page4 = new qx.ui.tabview.Page("Datasources");
+	        var page4 = new qx.ui.tabview.Page("Datasources","ae/qooxly/icons/datasource.png");
 	        page4.setLayout(new qx.ui.layout.VBox());
 	        this._datasourcesEditor = new ae.qooxly.ui.Datasources();
 	        page4.add(this._datasourcesEditor,{flex:1});

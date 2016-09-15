@@ -27,13 +27,13 @@ qx.Class.define("ae.qooxly.ui.Traces", {
 		qx.core.Init.getApplication().getChartView().bind("model.traces",this._controller,"model");
 
 		var tabView = new qx.ui.tabview.TabView();
-        var page1 = new qx.ui.tabview.Page("Data");
+        var page1 = new qx.ui.tabview.Page("Data","ae/qooxly/icons/data.png");
         page1.setLayout(new qx.ui.layout.VBox());
         var data = new ae.qooxly.ui.form.Data(this._controller);
         page1.add(data,{flex:1});
         tabView.add(page1);
         
-        var page2 = new qx.ui.tabview.Page("Properties");
+        var page2 = new qx.ui.tabview.Page("Properties","ae/qooxly/icons/properties.png");
         page2.setLayout(new qx.ui.layout.VBox());
         this.properties = new qx.ui.container.Stack();
         page2.add(this.properties,{flex:1});
