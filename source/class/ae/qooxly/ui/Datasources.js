@@ -37,10 +37,10 @@ qx.Class.define("ae.qooxly.ui.Datasources", {
         this._controller.addListener("changeSelection",function(e){
         	if(e.getData().length<=0){
         		data.setEnabled(false);
-        		//qx.core.Init.getApplication().projectController.getCommand("removeTrace").setEnabled(false);
+        		qx.core.Init.getApplication().projectController.getCommand("removeDatasource").setEnabled(false);
         	}else{
         		data.setEnabled(true);
-        		//qx.core.Init.getApplication().projectController.getCommand("removeTrace").setEnabled(true);
+        		qx.core.Init.getApplication().projectController.getCommand("removeDatasource").setEnabled(true);
         	}
         })
 	}
