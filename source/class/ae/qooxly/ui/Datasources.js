@@ -39,6 +39,9 @@ qx.Class.define("ae.qooxly.ui.Datasources", {
         		data.setEnabled(false);
         		qx.core.Init.getApplication().projectController.getCommand("removeDatasource").setEnabled(false);
         	}else{
+        		if(e.getData().getItem(0).getData()==null || e.getData().getItem(0).getData().length==0){
+        			data.radioButtonGroupHBox.setSelection([data.csvRButton]);
+        		}
         		data.setEnabled(true);
         		qx.core.Init.getApplication().projectController.getCommand("removeDatasource").setEnabled(true);
         	}
