@@ -211,66 +211,82 @@ qx.Class.define("ae.qooxly.controller.Project",{
         },
 
         openPlot : function(){
-        	var win = this.win = new qx.ui.window.Window(this
-					.tr("Open...")).set({
-				width : 300,
-				//height:400,
-				showMaximize : false,
-				showMinimize : false,
-				showClose : true,
-				contentPadding : 0
-			});
-			this.win.setLayout(new qx.ui.layout.VBox());
+        	if(qx.core.Environment.get("browser.name") == "chrome") {
+				var input = document.createElement('input');
+				input.setAttribute('type', 'file');
+				var controller = this;
+				input.onchange = function(e) {
+					var fr = new FileReader();
+                    fr.readAsText(e.path[0].files[0]);
+                    fr.onloadend = function (e) {
+                        var jsmodel = qx.lang.Json.parse(e.target.result);
+                        controller.loadFromJson(jsmodel);
+                    };
+				}
+				input.click();
+        	}else{
+        		var win = this.win = new qx.ui.window.Window(this
+    					.tr("Open...")).set({
+    				width : 300,
+    				//height:400,
+    				showMaximize : false,
+    				showMinimize : false,
+    				showClose : true,
+    				contentPadding : 0
+    			});
+    			this.win.setLayout(new qx.ui.layout.VBox());
 
-			win.addListener("resize", function() {
-				this.center();
-			}, win);
+    			win.addListener("resize", function() {
+    				this.center();
+    			}, win);
 
-			var layout = new qx.ui.layout.Grid(10, 20);
-			layout.setSpacing(5);
+    			var layout = new qx.ui.layout.Grid(10, 20);
+    			layout.setSpacing(5);
 
-			var inputWidget = new ae.qooxly.ui.UploadWidget().set({
-				margin : 5
-			});
+    			var inputWidget = new ae.qooxly.ui.UploadWidget().set({
+    				margin : 5
+    			});
 
-			var composite = new qx.ui.container.Composite()
-					.set({
-						margin : 5
-					});
-			composite.setLayout(new qx.ui.layout.HBox().set({
-				spacing : 4,
-				alignX : "right"
-			}));
-			var cancelButton = new qx.ui.form.Button("Cancel");
-			cancelButton.addListener("click", function(e) {
-				this.close();
-			}, win);
-			var addButton = this.addButton = new qx.ui.form.Button(this.tr("Open"));
-			this.addButton.addListener("click", function(e) {
-				//HTML5 Version - Doesn't work with ie9
-            	var charge = new FileReader();
+    			var composite = new qx.ui.container.Composite()
+    					.set({
+    						margin : 5
+    					});
+    			composite.setLayout(new qx.ui.layout.HBox().set({
+    				spacing : 4,
+    				alignX : "right"
+    			}));
+    			var cancelButton = new qx.ui.form.Button("Cancel");
+    			cancelButton.addListener("click", function(e) {
+    				this.close();
+    			}, win);
+    			var addButton = this.addButton = new qx.ui.form.Button(this.tr("Open"));
+    			this.addButton.addListener("click", function(e) {
+    				//HTML5 Version - Doesn't work with ie9
+                	var charge = new FileReader();
 
-                charge.readAsText(inputWidget.getFiles()[0]);
+                    charge.readAsText(inputWidget.getFiles()[0]);
 
-                var controller = this;
-                charge.onloadend = function (e) {
+                    var controller = this;
+                    charge.onloadend = function (e) {
 
-                    var jsmodel = qx.lang.Json.parse(e.target.result);
-                    controller.loadFromJson(jsmodel);
-                    win.close();
-                };
-			},this);
-			
-			composite.add(addButton);
-			this.win.add(inputWidget);
+                        var jsmodel = qx.lang.Json.parse(e.target.result);
+                        controller.loadFromJson(jsmodel);
+                        win.close();
+                    };
+    			},this);
+    			
+    			composite.add(addButton);
+    			this.win.add(inputWidget);
 
 
-			
-			composite.add(cancelButton);
+    			
+    			composite.add(cancelButton);
 
-			
-			this.win.add(composite);
-			this.win.show();
+    			
+    			this.win.add(composite);
+    			this.win.show();
+        	}
+        	
         },
         
         openPlotFromUrl : function(){
