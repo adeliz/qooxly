@@ -23,13 +23,16 @@ qx.Class.define("ae.qooxly.ui.Axes", {
 		/*if(yaxes.length==0){yaxes.push(new ae.chart.model.axis.Axis());}
 		var xaxes = qx.core.Init.getApplication().getChartModel().getLayout().getXaxes();
 		if(xaxes.length==0){xaxes.push(new ae.chart.model.axis.Axis());}*/
-		this._controller = new qx.data.controller.List(null, this.list,"title");
-		qx.core.Init.getApplication().getChartView().bind("model.layout.yaxes",this._controller,"model");
+		var ctler = this._controller = new qx.data.controller.List(null, this.list,"title");
+
 		this._controller.setLabelOptions({
 			converter : function(data, model) {
-				return model.getTitle() ? "y"+(yaxes.indexOf(model)+1)+" : "+model.getTitle() : "y"+(yaxes.indexOf(model)+1);
+				return model.getTitle() ? "y"+(ctler.getModel().indexOf(model)+1)+" : "+model.getTitle() : "y"+(ctler.getModel().indexOf(model)+1);
 			}
 		});
+		
+		
+		qx.core.Init.getApplication().getChartView().bind("model.layout.yaxes",this._controller,"model");
 		
 		radioButtonGroupHBox.addListener('changeSelection',function(e){
 	    	if(e.getData()[0].getLabel()=="X axes"){
