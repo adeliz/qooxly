@@ -24,7 +24,7 @@ qx.Class.define("ae.qooxly.ui.Axes", {
 		var xaxes = qx.core.Init.getApplication().getChartModel().getLayout().getXaxes();
 		if(xaxes.length==0){xaxes.push(new ae.chart.model.axis.Axis());}*/
 		var ctler = this._controller = new qx.data.controller.List(null, this.list,"title");
-
+		
 		this._controller.setLabelOptions({
 			converter : function(data, model) {
 				return model.getTitle() ? "y"+(ctler.getModel().indexOf(model)+1)+" : "+model.getTitle() : "y"+(ctler.getModel().indexOf(model)+1);
