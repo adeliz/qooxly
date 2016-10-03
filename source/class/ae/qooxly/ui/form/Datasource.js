@@ -40,9 +40,20 @@ qx.Class.define("ae.qooxly.ui.form.Datasource", {
 		var url = new qx.ui.form.TextField().set({
 			placeholder:"http://www.example.com?"
 		});
-		var method = new qx.ui.form.TextField("GET").set({
-			enabled:false
-		});
+
+		var method = new qx.ui.form.SelectBox();
+		var methods = [
+          {label: this.tr("GET"), data: "GET"},
+          {label: this.tr("POST"), data: "POST"}
+        ];
+        var mmodel = qx.data.marshal.Json.createModel(methods);
+        var mController = new qx.data.controller.List(null, method);
+        mController.setDelegate({bindItem: function(controller, item, index) {
+	        controller.bindProperty("label", "label", null, item, index);
+	        controller.bindProperty("data", "model", null, item, index);
+	    }});
+        mController.setModel(mmodel);	
+	    
 		var parameters = new qx.ui.form.TextArea().set({
 			placeholder:'{\n"s":"YHOO",\n"a":"3",\n"b":"12",\n"c":"2015",\n"d":"1",\n"e":"28",\n"f":"2016",\n"g":"w"\n}'
 		});
